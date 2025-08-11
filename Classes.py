@@ -4,11 +4,11 @@ database = SQLAlchemy()
 
 class Appointment(database.model):
     id = database.Column(database.Integer, primary_key=True)
-    time = database.Column(database.String(5))
-    date = database.Column(database.Date)
-    client_number = database.Column(database.Integer(50))
-    client_name = database.Column(database.String(50))
-    status = database.Column(database.String(20))  # 3 possible values: confirmed, canceled or unknown
+    time = database.Column(database.String(5),nullable=False)
+    date = database.Column(database.Date,nullable=False)
+    client_number = database.Column(database.Integer(50),nullable=False)
+    client_name = database.Column(database.String(50),nullable=False)
+    status = database.Column(database.String(20),nullable=False)  # 3 possible values: confirmed, canceled or unknown
     pet_id = database.Column(database.Integer, database.ForeignKey('pet.id'), nullable=False)
     pet = database.relationship('Pet', back_populates='appointments')
     assigned_employee = database.relationship('Employee', back_populates='appointments')
@@ -35,8 +35,8 @@ class Appointment(database.model):
 
 class Pet(database.model):
     id = database.Column(database.Integer, primary_key=True)
-    name = database.Column(database.String(100))
-    owner = database.Column(database.String(100))
+    name = database.Column(database.String(100),nullable=False)
+    owner = database.Column(database.String(100),nullable=False)
 
     appointments = database.relationship('Appointment', back_populates='pets', lazy=True)
 
@@ -76,15 +76,15 @@ class Service(database.model):
 
 
 class Employee(database.model):
-    id = database.Column(database.Integer, primary_key=True)
+    employee_id = database.Column(database.Integer, primary_key=True)
     name = database.Column(database.String(50))
 
     appointments = database.relationship('Appointment', back_populates='pets', lazy=True)
 
     @staticmethod
-    def add(service_id, name):
+    def add(employee_id, name):
         new_employee = Employee(
-            service_id=service_id,
+            employee_id=employee_id,
             name=name,
         )
         database.session.add(new_employee)
@@ -96,14 +96,27 @@ class Employee(database.model):
 
 class reminderMessage(database.model):
     id = database.Column(database.Integer, primary_key=True)
-    client_name = database.column(database.string(50),database.ForeignKey('appointment.client_name'))
-    client_number = database.column(database.Integer(50),database.ForeignKey('appointment.client_number'))
-    pet_name = database.column(database.string(50),database.ForeignKey('pet.pet_name'))
-    appointment_time = database.Column(database.String(50))
-    appointment_date = database.Column(database.Date)
+    client_name = database.column(database.string(50),database.ForeignKey('appointment.client_name'),nullable=False)
+    client_number = database.column(database.Integer(50),database.ForeignKey('appointment.client_number'),nullable=False)
+    pet_name = database.column(database.string(50),database.ForeignKey('pet.pet_name'),nullable=False)
+    appointment_time = database.Column(database.String(50),nullable=False)
+    appointment_date = database.Column(database.Date,nullable=False)
 
 
     appointments = database.relationship('Appointment', back_populates='', lazy=True)
-    appointments = database.relationship('Appointment', back_populates='pets', lazy=True)
-    appointments = database.relationship('Appointment', back_populates='pets', lazy=True)
-    appointments = database.relationship('Appointment', back_populates='pets', lazy=True)
+
+    @staticmethod
+    def add(id, client_name, client_number, pet_name, appointment_time, appointment_date):
+        new_reminder = reminderMessage(
+            id=id,
+            client_name=client_name,
+            client_number=client_number,
+            pet_name=pet_name,
+            appointment_time=appointment_time,
+            appointment_date=appointment_date
+        )
+        database.session.add(new_reminder)
+        database.session.commit()
+    @staticmethod
+    def get_reminders():
+        return reminderMessage.query.all()
