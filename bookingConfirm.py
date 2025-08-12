@@ -34,12 +34,15 @@ def create_appointment():
     # confirm_appointment(text_response, new_appointment)
 
 
-def confirm_appointment(appointment, current_time):
+def confirm_appointment(appointment,):
     appointments = Appointment.query_all()
     messages = reminderMessage.query_all()
     contact_num = ''
+    current_timedate = datetime.now()
+    current_time = current_timedate.time()
+    currentdate = current_timedate.date()
     message = f'Hello {messages.client_name} this message is to confirm your appointment at {messages.appointment_time} on {messages.appointment_date}. To confirm your appointment please respond with Y or yes, to cancel, send No or N, to reschedule your appointment please call us at {contact_num} '
-    if current_time > appointments.appointment_time:
+    if current_time == messages.reminder_time & currentdate == messages.reminder_date:
         send_message(message, contact_num)
     message_response = receive_message()
     if message_response == 'Yes':

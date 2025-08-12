@@ -101,19 +101,22 @@ class reminderMessage(database.model):
     pet_name = database.column(database.string(50),database.ForeignKey('pet.pet_name'),nullable=False)
     appointment_time = database.Column(database.String(50),nullable=False)
     appointment_date = database.Column(database.Date,nullable=False)
-
+    reminder_time = database.Column(database.String(50), nullable=False)
+    reminder_date = database.Column(database.Date, nullable=False)
 
     appointments = database.relationship('Appointment', back_populates='', lazy=True)
 
     @staticmethod
-    def add(id, client_name, client_number, pet_name, appointment_time, appointment_date):
+    def add(id, client_name, client_number, pet_name, appointment_time, appointment_date, reminder_time, reminder_date):
         new_reminder = reminderMessage(
             id=id,
             client_name=client_name,
             client_number=client_number,
             pet_name=pet_name,
             appointment_time=appointment_time,
-            appointment_date=appointment_date
+            appointment_date=appointment_date,
+            reminder_time=reminder_time,
+            reminder_date=reminder_date
         )
         database.session.add(new_reminder)
         database.session.commit()
