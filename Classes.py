@@ -9,7 +9,7 @@ class Appointment(database.model):
     client_number = database.Column(database.Integer(50),nullable=False)
     client_name = database.Column(database.String(50),nullable=False)
     status = database.Column(database.String(20),nullable=False)  # 3 possible values: confirmed, canceled or unknown
-    pet_id = database.Column(database.Integer, database.ForeignKey('pet.id'), nullable=False)
+    pet_name = database.Column(database.String(20), database.ForeignKey('pet.name'), nullable=False)
     pet = database.relationship('Pet', back_populates='appointments')
     assigned_employee = database.relationship('Employee', back_populates='appointments')
 

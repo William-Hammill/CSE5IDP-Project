@@ -4,25 +4,26 @@ from datetime import datetime
 from Messaging import send_message, receive_message
 
 appointments = Blueprint('appointments', __name__)
-stored_appointments = []
+
 
 
 @appointments.route('/appointments/<int:id>', methods=['GET', 'POST'])
 def create_appointment(appointment_id):
     pets = Pet.query_all()
    # services = Service.query.all()
-    pets.id = request.form.get('pet_id')
-    time_string = request.form.get('pet_id')
-    date_string = request.form.get('pet_id')
+    pets.name = request.form.get('pet_name')
+    time_string = request.form.get('appointment_time').strip()
+    date_string = request.form.get('appointment_date')
     appointment_date = datetime.strptime(date_string, '%Y-%m-%d').date()
     appointment_time = datetime.strptime(time_string, '%I:%M %p').strftime('%H:%M')
     service_id = request.form.get('Service')
     assigned_employee = 'N/A'
     contact_num = ''
-    new_appointment = Appointment(pet_id=pets.id, appointment_date=appointment_date, appointment_time=appointment_time,
+    client_name = request.form.get('client_name')
+    new_appointment = Appointment(pet_name=pets.name, client_name=client_name, appointment_date=appointment_date, appointment_time=appointment_time,
                                   service_id=service_id, assigned_employee=assigned_employee, status='unknown')
     new_message = reminderMessage(client_name=new_appointment.client_name, client_number=new_appointment.client_number,
-                                  pet_name=new_appointment.pet, appointment_date=new_appointment.appointment_date,
+                                  pet_name=new_appointment.pet_name, appointment_date=new_appointment.appointment_date,
                                   appointment_time=new_appointment.appointment_time)
     print("Do you want an automatic notification")
     database.session.add(new_appointment)
