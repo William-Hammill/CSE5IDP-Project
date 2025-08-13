@@ -24,15 +24,10 @@ def create_appointment(appointment_id):
     new_message = reminderMessage(client_name=new_appointment.client_name, client_number=new_appointment.client_number,
                                   pet_name=new_appointment.pet, appointment_date=new_appointment.appointment_date,
                                   appointment_time=new_appointment.appointment_time)
-    #message = f'Hello {new_message.client_name} this message is to confirm your appointment at {new_message.appointment_time} on {new_message.appointment_date}. To confirm your appointment please respond with Y or yes, to cancel, send No or N, to reschedule your appointment please call us at {contact_num}'
     print("Do you want an automatic notification")
-    #new_message = reminderMessage(message)
     database.session.add(new_appointment)
     database.session.add(new_message)
     database.session.commit()
-    # send_message(message, contact_num)
-    # text_response = ''
-    # confirm_appointment(text_response, new_appointment)
 
 
 def confirm_appointment(appointment_id):
@@ -43,18 +38,15 @@ def confirm_appointment(appointment_id):
     current_time = current_timedate.time()
     currentdate = current_timedate.date()
     message = f'Hello {messages.client_name} this message is to confirm your appointment at {messages.appointment_time} on {messages.appointment_date}. To confirm your appointment please respond with Y or yes, to cancel, send No or N, to reschedule your appointment please call us at {contact_num} '
+    #send_message((message, appointments.client_number))
     if current_time == messages.reminder_time & currentdate == messages.reminder_date:
-        send_message(message, contact_num)
+        send_message(message, appointments.client_number)
     message_response = receive_message()
     if message_response == 'Yes':
         appointments.status = 'confirmed'
-        #database.session.add(appointment)
-        # database.session.remove(appointment)
         database.session.commit()
     else:
         appointments.status = 'canceled'
-        #database.session.add(appointment)
-        # database.session.remove(appointment)
         database.session.commit()
 
 
