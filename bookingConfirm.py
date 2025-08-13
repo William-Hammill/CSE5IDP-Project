@@ -8,9 +8,9 @@ stored_appointments = []
 
 
 @appointments.route('/appointments/<int:id>', methods=['GET', 'POST'])
-def create_appointment():
+def create_appointment(appointment_id):
     pets = Pet.query_all()
-    services = Service.query.all()
+   # services = Service.query.all()
     pets.id = request.form.get('pet_id')
     time_string = request.form.get('pet_id')
     date_string = request.form.get('pet_id')
@@ -35,9 +35,9 @@ def create_appointment():
     # confirm_appointment(text_response, new_appointment)
 
 
-def confirm_appointment(appointment):
-    appointments = Appointment.query_all()
-    messages = reminderMessage.query_all()
+def confirm_appointment(appointment_id):
+    appointments = Appointment.query.get_or_404(appointment_id)
+    messages = reminderMessage.query_all(appointment_id)
     contact_num = ''
     current_timedate = datetime.now()
     current_time = current_timedate.time()

@@ -103,6 +103,7 @@ class reminderMessage(database.model):
     appointment_date = database.Column(database.Date,nullable=False)
     reminder_time = database.Column(database.String(50), nullable=False)
     reminder_date = database.Column(database.Date, nullable=False)
+    appointment_id = database.Column(database.integer, database.ForeignKey('appointment.id'))
 
     appointments = database.relationship('Appointment', back_populates='', lazy=True)
 
