@@ -7,6 +7,7 @@ appointments = Blueprint('appointments', __name__)
 stored_appointments = []
 
 
+@appointments.route('/appointments', methods=['GET', 'POST'])
 def create_appointment():
     pets = Pet.query_all()
     services = Service.query.all()
@@ -23,9 +24,9 @@ def create_appointment():
     new_message = reminderMessage(client_name=new_appointment.client_name, client_number=new_appointment.client_number,
                                   pet_name=new_appointment.pet, appointment_date=new_appointment.appointment_date,
                                   appointment_time=new_appointment.appointment_time)
-    message = f'Hello {new_message.client_name} this message is to confirm your appointment at {new_message.appointment_time} on {new_message.appointment_date}. To confirm your appointment please respond with Y or yes, to cancel, send No or N, to reschedule your appointment please call us at {contact_num}'
+    #message = f'Hello {new_message.client_name} this message is to confirm your appointment at {new_message.appointment_time} on {new_message.appointment_date}. To confirm your appointment please respond with Y or yes, to cancel, send No or N, to reschedule your appointment please call us at {contact_num}'
     print("Do you want an automatic notification")
-    new_message = reminderMessage(message)
+    #new_message = reminderMessage(message)
     database.session.add(new_appointment)
     database.session.add(new_message)
     database.session.commit()
@@ -34,7 +35,7 @@ def create_appointment():
     # confirm_appointment(text_response, new_appointment)
 
 
-def confirm_appointment(appointment,):
+def confirm_appointment(appointment, ):
     appointments = Appointment.query_all()
     messages = reminderMessage.query_all()
     contact_num = ''
