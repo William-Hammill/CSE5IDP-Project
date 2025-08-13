@@ -7,7 +7,7 @@ appointments = Blueprint('appointments', __name__)
 stored_appointments = []
 
 
-@appointments.route('/appointments', methods=['GET', 'POST'])
+@appointments.route('/appointments/<int:id>', methods=['GET', 'POST'])
 def create_appointment():
     pets = Pet.query_all()
     services = Service.query.all()
@@ -35,7 +35,7 @@ def create_appointment():
     # confirm_appointment(text_response, new_appointment)
 
 
-def confirm_appointment(appointment, ):
+def confirm_appointment(appointment):
     appointments = Appointment.query_all()
     messages = reminderMessage.query_all()
     contact_num = ''
@@ -47,13 +47,13 @@ def confirm_appointment(appointment, ):
         send_message(message, contact_num)
     message_response = receive_message()
     if message_response == 'Yes':
-        appointment.status = 'confirmed'
-        database.session.add(appointment)
+        appointments.status = 'confirmed'
+        #database.session.add(appointment)
         # database.session.remove(appointment)
         database.session.commit()
     else:
-        appointment.status = 'canceled'
-        database.session.add(appointment)
+        appointments.status = 'canceled'
+        #database.session.add(appointment)
         # database.session.remove(appointment)
         database.session.commit()
 

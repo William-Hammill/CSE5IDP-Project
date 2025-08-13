@@ -8,7 +8,7 @@
 <h4>Book appointment</h4>
 <p>Please enter the details for your appointment below</p>
 <div>
-    <form>
+    <form action="{{ url_for('appointments', id=appointment.id) }}">
         <div class="input-field">
             <label for="new_appointment_date">Date:</label>
             <input type="text" name="appointment_date" id="new_appointment_date" class="datepicker" required>
@@ -41,6 +41,7 @@
             <input type="text" name="reminder_time" id="new_reminder_time" class="timepicker" required>
         </div>
     </form>
+    <button type="submit" class="btn waves-effect waves-light">Submit details</button>
 </div>
 </body>
 </html>
