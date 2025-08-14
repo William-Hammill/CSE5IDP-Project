@@ -6,11 +6,10 @@ from Messaging import send_message, receive_message
 appointments = Blueprint('appointments', __name__)
 
 
-
 @appointments.route('/appointments/<int:id>', methods=['GET', 'POST'])
 def create_appointment(appointment_id):
     pets = Pet.query_all()
-   # services = Service.query.all()
+    # services = Service.query.all()
     pets.name = request.form.get('pet_name')
     time_string = request.form.get('appointment_time').strip()
     date_string = request.form.get('appointment_date')
@@ -20,15 +19,20 @@ def create_appointment(appointment_id):
     assigned_employee = 'N/A'
     contact_num = ''
     client_name = request.form.get('client_name')
-    new_appointment = Appointment(pet_name=pets.name, client_name=client_name, appointment_date=appointment_date, appointment_time=appointment_time,
+    new_appointment = Appointment(pet_name=pets.name, client_name=client_name, appointment_date=appointment_date,
+                                  appointment_time=appointment_time,
                                   service_id=service_id, assigned_employee=assigned_employee, status='unknown')
+    reminder_time = appointment_time
+    reminder_date = appointment_date - 1  # placeholder for determining default 24 hour notification
     new_message = reminderMessage(client_name=new_appointment.client_name, client_number=new_appointment.client_number,
                                   pet_name=new_appointment.pet_name, appointment_date=new_appointment.appointment_date,
-                                  appointment_time=new_appointment.appointment_time)
+                                  appointment_time=new_appointment.appointment_time, reminder_time=reminder_time,
+                                  reminder_date=reminder_date)
     print("Do you want an automatic notification")
     database.session.add(new_appointment)
     database.session.add(new_message)
     database.session.commit()
+
 
 @appointments.route('/appointments/reminder/<int:id>', methods=['GET', 'POST'])
 def confirm_appointment(appointment_id):
@@ -39,7 +43,7 @@ def confirm_appointment(appointment_id):
     current_time = current_timedate.time()
     currentdate = current_timedate.date()
     message = f'Hello {messages.client_name} this message is to confirm your appointment at {messages.appointment_time} on {messages.appointment_date}. To confirm your appointment please respond with Y or yes, to cancel, send No or N, to reschedule your appointment please call us at {contact_num} '
-    #send_message((message, appointments.client_number))
+    # send_message((message, appointments.client_number))
     if current_time == messages.reminder_time & currentdate == messages.reminder_date:
         send_message(message, appointments.client_number)
     message_response = receive_message()
