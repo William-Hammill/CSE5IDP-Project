@@ -30,7 +30,7 @@ def create_appointment(appointment_id):
     database.session.add(new_message)
     database.session.commit()
 
-
+@appointments.route('/appointments/reminder/<int:id>', methods=['GET', 'POST'])
 def confirm_appointment(appointment_id):
     appointments = Appointment.query.get_or_404(appointment_id)
     messages = reminderMessage.query_all(appointment_id)

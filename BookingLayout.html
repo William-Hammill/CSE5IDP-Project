@@ -31,7 +31,7 @@
         </div>
     </form>
     <p>Do you wish to set a reminder message? Please enter a time and date below</p>
-    <form>
+    <form action="{{ url_for('appointments.reminder', id=appointment.id) }}">
         <div class="input-field">
             <label for="new_reminder_date">Date:</label>
             <input type="text" name="appointment_date" id="new_reminder_date" class="datepicker" required>
