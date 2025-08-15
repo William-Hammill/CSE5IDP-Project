@@ -17,7 +17,6 @@ def create_appointment(appointment_id):
     appointment_time = datetime.strptime(time_string, '%I:%M %p').strftime('%H:%M')
     service_id = request.form.get('Service')
     assigned_employee = 'N/A'
-    contact_num = ''
     client_name = request.form.get('client_name')
     new_appointment = Appointment(pet_name=pets.name, client_name=client_name, appointment_date=appointment_date,
                                   appointment_time=appointment_time,
@@ -28,7 +27,7 @@ def create_appointment(appointment_id):
                                   pet_name=new_appointment.pet_name, appointment_date=new_appointment.appointment_date,
                                   appointment_time=new_appointment.appointment_time, reminder_time=reminder_time,
                                   reminder_date=reminder_date)
-    print("Do you want an automatic notification")
+    print("Please select a time and date for your reminder and confirmation message")
     database.session.add(new_appointment)
     database.session.add(new_message)
     database.session.commit()
@@ -38,7 +37,7 @@ def create_appointment(appointment_id):
 def confirm_appointment(appointment_id):
     appointments = Appointment.query.get_or_404(appointment_id)
     messages = reminderMessage.query_all(appointment_id)
-    contact_num = ''
+    contact_num = '0123456'#placeholder number
     current_timedate = datetime.now()
     current_time = current_timedate.time()
     currentdate = current_timedate.date()
