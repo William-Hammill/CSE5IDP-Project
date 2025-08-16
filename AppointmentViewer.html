@@ -15,6 +15,14 @@ note: this file may be deleted if feature is deemed Unnecessary
     <td>Appointment Date</td>
     <td>Appointment status</td>
   </tr>
+    {% for appointment in appointments%}
+    <tr>
+        <td>appointment.pet.pet_name</td>
+        <td>appointment.client_name</td>
+        <td>appointment.appointment_time</td>
+        <td>appointment.appointment_date</td>
+        <td>appointment.status</td>
+    </tr>
 </table>
 </body>
 </html>
