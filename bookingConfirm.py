@@ -37,12 +37,11 @@ def create_appointment(appointment_id):
 def confirm_appointment(appointment_id):
     appointments = Appointment.query.get_or_404(appointment_id)
     messages = reminderMessage.query_all(appointment_id)
-    contact_num = '(03) 5442 8880'  # placeholder number
+    contact_num = '(03) 5442 8880'
     current_timedate = datetime.now()
     current_time = current_timedate.time()
     currentdate = current_timedate.date()
     message = f'Hello {messages.client_name}, This is a reminder of your appointment at K9-Deli for {messages.pet_name} scheduled for {messages.appointment_date} at {messages.appointment_time}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule please ring {contact_num} '
-    # send_message((message, appointments.client_number))
     if current_time == '09:00' & currentdate == messages.reminder_date:
         send_message(message, appointments.client_number)
     message_response = receive_message()
