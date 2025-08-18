@@ -75,24 +75,24 @@ class Service(database.model):
         return Service.query.all()
 
 
-class Employee(database.model):
-    employee_id = database.Column(database.Integer, primary_key=True)
-    name = database.Column(database.String(50))
+#class Employee(database.model):
+#    employee_id = database.Column(database.Integer, primary_key=True)
+#    name = database.Column(database.String(50))
 
-    appointments = database.relationship('Appointment', back_populates='pets', lazy=True)
+    #appointments = database.relationship('Appointment', back_populates='pets', lazy=True)
 
-    @staticmethod
-    def add(employee_id, name):
-        new_employee = Employee(
-            employee_id=employee_id,
-            name=name,
-        )
-        database.session.add(new_employee)
-        database.session.commit()
+    #@staticmethod
+    #def add(employee_id, name):
+    #    new_employee = Employee(
+    #        employee_id=employee_id,
+    #        name=name,
+    #    )
+    #    database.session.add(new_employee)
+    #    database.session.commit()
 
-    @staticmethod
-    def get_employees():
-        return Employee.query.all()
+    #@staticmethod
+    #def get_employees():
+    #    return Employee.query.all()
 
 class reminderMessage(database.model):
     id = database.Column(database.Integer, primary_key=True)
@@ -101,10 +101,9 @@ class reminderMessage(database.model):
     pet_name = database.column(database.string(50),database.ForeignKey('pet.pet_name'),nullable=False)
     appointment_time = database.Column(database.String(50),nullable=False)
     appointment_date = database.Column(database.Date,nullable=False)
-    reminder_time = database.Column(database.String(50), nullable=False)
-    reminder_date = database.Column(database.Date, nullable=False)
+    #reminder_time = database.Column(database.String(50), nullable=False)
+    #reminder_date = database.Column(database.Date, nullable=False)
     appointment_id = database.Column(database.integer, database.ForeignKey('appointment.id'))
-
     appointments = database.relationship('Appointment', back_populates='', lazy=True)
 
     @staticmethod

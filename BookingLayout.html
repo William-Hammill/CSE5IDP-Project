@@ -9,7 +9,7 @@
 <h4>Book appointment</h4>
 <p>Please enter the details for your appointment below</p>
 <div>
-    <form action="{{ url_for('appointments', id=appointment.id) }}">
+    <form action="{{ url_for('appointments.create', id=appointment.id) }}">
         <div class="input-field">
             <label for="new_appointment_date">Date:</label>
             <input type="text" name="appointment_date" id="new_appointment_date" class="datepicker" required>
@@ -30,19 +30,9 @@
             <label for="new_service_name">Desired service</label>
             <textarea name="service-name" id="new_Service_name" class="materialize-textarea"></textarea>
         </div>
+        <button type="submit" class="btn waves-effect waves-light">Submit details</button>
     </form>
-    <p>Do you wish to set a reminder message? Please enter a time and date below</p>
-    <form action="{{ url_for('appointments.reminder', id=appointment.id) }}">
-        <div class="input-field">
-            <label for="new_reminder_date">Date:</label>
-            <input type="text" name="appointment_date" id="new_reminder_date" class="datepicker" required>
-        </div>
-        <div class="input-field">
-            <label for="new_reminder_time">Time:</label>
-            <input type="text" name="reminder_time" id="new_reminder_time" class="timepicker" required>
-        </div>
-    </form>
-    <button type="submit" class="btn waves-effect waves-light">Submit details</button>
+
 </div>
 </body>
 </html>
