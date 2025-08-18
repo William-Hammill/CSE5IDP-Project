@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash
 from Classes import Appointment, Pet, Service, database, reminderMessage
-from datetime import datetime
+from datetime import datetime, timedelta
 from Messaging import send_message, receive_message
 
 appointments = Blueprint('appointments', __name__)
@@ -21,13 +21,12 @@ def create_appointment(appointment_id):
     new_appointment = Appointment(pet_name=pets.name, client_name=client_name, appointment_date=appointment_date,
                                   appointment_time=appointment_time,
                                   service_id=service_id, assigned_employee=assigned_employee, status='canceled')
-    reminder_time = appointment_time
-    reminder_date = appointment_date - 1  # placeholder for determining default 24 hour notification
+    # reminder_time = appointment_time
+    date_notice = timedelta(days=1)
+    reminder_date = appointment_date - date_notice  # placeholder for determining 24 hour notification
     new_message = reminderMessage(client_name=new_appointment.client_name, client_number=new_appointment.client_number,
                                   pet_name=new_appointment.pet_name, appointment_date=new_appointment.appointment_date,
-                                  appointment_time=new_appointment.appointment_time, reminder_time=reminder_time,
-                                  reminder_date=reminder_date)
-    #print("Please select a time and date for your reminder and confirmation message")
+                                  appointment_time=new_appointment.appointment_time, reminder_date=reminder_date)
     database.session.add(new_appointment)
     database.session.add(new_message)
     database.session.commit()
@@ -37,25 +36,25 @@ def create_appointment(appointment_id):
 def confirm_appointment(appointment_id):
     appointments = Appointment.query.get_or_404(appointment_id)
     messages = reminderMessage.query_all(appointment_id)
-    contact_num = '(03) 5442 8880'#placeholder number
+    contact_num = '(03) 5442 8880'  # placeholder number
     current_timedate = datetime.now()
     current_time = current_timedate.time()
     currentdate = current_timedate.date()
     message = f'Hello {messages.client_name}, This is a reminder of your appointment at K9-Deli for {messages.pet_name} scheduled for {messages.appointment_date} at {messages.appointment_time}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule please ring {contact_num} '
     # send_message((message, appointments.client_number))
-    if current_time == '09:00':
+    if current_time == '09:00' & currentdate == messages.reminder_date:
         send_message(message, appointments.client_number)
     message_response = receive_message()
-    if message_response == 'Yes':
+    if message_response == 'Y':
         appointments.status = 'confirmed'
         database.session.commit()
     else:
         database.session.remove(appointments)
-        #appointments.status = 'canceled'
+        # appointments.status = 'canceled'
         database.session.commit()
 
 
-#def allocate_employee():
+# def allocate_employee():
 #    employee = Employee.query.all()
 #    selected_appointment = Appointment.query.get_or_404()
 #    selected_appointment.assigned_employee = employee

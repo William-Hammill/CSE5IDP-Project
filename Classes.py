@@ -6,12 +6,14 @@ class Appointment(database.model):
     id = database.Column(database.Integer, primary_key=True)
     time = database.Column(database.String(5),nullable=False)
     date = database.Column(database.Date,nullable=False)
-    client_number = database.Column(database.Integer(50),nullable=False)
-    client_name = database.Column(database.String(50),nullable=False)
+    customer_number = database.Column(database.Integer(50),nullable=False)
+    customer_first_name = database.Column(database.String(50),nullable=False)
+    customer_last_name = database.Column(database.String(50), nullable=False)
+    customer_id = database.Colimn(database.Integer)
     status = database.Column(database.String(20),nullable=False)  # 3 possible values: confirmed, canceled or unknown
     pet_name = database.Column(database.String(20), database.ForeignKey('pet.name'), nullable=False)
     pet = database.relationship('Pet', back_populates='appointments')
-    assigned_employee = database.relationship('Employee', back_populates='appointments')
+    staff_id = database.relationship('Employee', back_populates='appointments')
 
     #service_id = database.Column(database.Integer, database.ForeignKey('service.id'))
     #servicetype = database.relationship('Service', back_populates='appointments')
@@ -102,7 +104,7 @@ class reminderMessage(database.model):
     appointment_time = database.Column(database.String(50),nullable=False)
     appointment_date = database.Column(database.Date,nullable=False)
     #reminder_time = database.Column(database.String(50), nullable=False)
-    #reminder_date = database.Column(database.Date, nullable=False)
+    reminder_date = database.Column(database.Date, nullable=False)
     appointment_id = database.Column(database.integer, database.ForeignKey('appointment.id'))
     appointments = database.relationship('Appointment', back_populates='', lazy=True)
 
