@@ -98,12 +98,11 @@ class Service(database.model):
 
 class reminderMessage(database.model):
     id = database.Column(database.Integer, primary_key=True)
-    client_name = database.column(database.string(50),database.ForeignKey('appointment.client_name'),nullable=False)
+    client_name = database.column(database.string(50),database.ForeignKey('appointment.customer_first_name'),nullable=False)
     client_number = database.column(database.Integer(50),database.ForeignKey('appointment.client_number'),nullable=False)
     pet_name = database.column(database.string(50),database.ForeignKey('pet.pet_name'),nullable=False)
     appointment_time = database.Column(database.String(50),nullable=False)
     appointment_date = database.Column(database.Date,nullable=False)
-    #reminder_time = database.Column(database.String(50), nullable=False)
     reminder_date = database.Column(database.Date, nullable=False)
     appointment_id = database.Column(database.integer, database.ForeignKey('appointment.id'))
     appointments = database.relationship('Appointment', back_populates='', lazy=True)

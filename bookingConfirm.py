@@ -17,14 +17,15 @@ def create_appointment(appointment_id):
     appointment_time = datetime.strptime(time_string, '%I:%M %p').strftime('%H:%M')
     service_id = request.form.get('Service')
     assigned_employee = 'N/A'
-    client_name = request.form.get('client_name')
-    new_appointment = Appointment(pet_name=pets.name, client_name=client_name, appointment_date=appointment_date,
+    customer_first_name = request.form.get('customer_first_name')
+    customer_last_name = request.form.get('customer_last_name')
+    new_appointment = Appointment(pet_name=pets.name, customer_first_name=customer_first_name, client_last_name=customer_last_name, appointment_date=appointment_date,
                                   appointment_time=appointment_time,
                                   service_id=service_id, assigned_employee=assigned_employee, status='canceled')
     # reminder_time = appointment_time
     date_notice = timedelta(days=1)
     reminder_date = appointment_date - date_notice  # placeholder for determining 24 hour notification
-    new_message = reminderMessage(client_name=new_appointment.client_name, client_number=new_appointment.client_number,
+    new_message = reminderMessage(client_name=new_appointment.customer_first_name, client_number=new_appointment.customer_number,
                                   pet_name=new_appointment.pet_name, appointment_date=new_appointment.appointment_date,
                                   appointment_time=new_appointment.appointment_time, reminder_date=reminder_date)
     database.session.add(new_appointment)

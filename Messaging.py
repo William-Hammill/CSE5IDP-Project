@@ -1,5 +1,5 @@
 from twilio.rest import Client
-from flask import request
+from flask import request, app
 from twilio.twiml.messaging_response import MessagingResponse
 
 
@@ -11,11 +11,11 @@ def send_message(contents, number):
     return confirm_message.ssid
 
 
-# @app.route("/sms", methods=['GET', 'POST'])
+@app.route("/sms", methods=['GET', 'POST'])
 def receive_message():
-    # account_id = ''
-    # acc_token = ''
-    # message_client = Client(account_id, acc_token)
+    account_id = ''
+    acc_token = ''
+    message_client = Client(account_id, acc_token)
     message_response = request.form['Body}']
 
     return message_response
