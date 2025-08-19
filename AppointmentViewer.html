@@ -11,6 +11,9 @@
     <title>K9 Deli pet grooming appointments</title>
 </head>
 <body>
+<ul>
+            <li><a href="BookingLayout.html" target='BookingLayout.html'>Book Appointment</a></li>
+</ul>
 <h2>currently booked appointments:</h2>
 <table>
   <tr>
@@ -29,6 +32,7 @@
         <td>appointment.status</td>
     </tr>
 </table>
+<button class="{{ url_for('appointments.view_appointments') }}">Book Appointment</button>
 </body>
 <footer>
         <p>&copy; 2025 k9 Deli Pet Booking</p>
