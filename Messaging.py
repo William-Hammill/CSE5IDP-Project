@@ -16,5 +16,4 @@ def send_message(contents, number):
 #@app.route("/sms", methods=['GET', 'POST'])
 def receive_message():
     response = MessagingResponse
-
     return str(response)

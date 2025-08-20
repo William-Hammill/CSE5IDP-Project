@@ -11,7 +11,7 @@
 </head>
 <body>
 <h2>currently booked appointments:</h2>
-<textarea>note: despite status, appointments may not actually be canceled </textarea>
+<p>note: despite status, appointments may not actually be canceled </p>
 {% if appointments %}
 <form action="{{ url_for('appointments.view_appointment'}}" method="POST"
                 style="margin-top: 20px;">
