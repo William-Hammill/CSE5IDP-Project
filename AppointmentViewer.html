@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-# note: this file may be deleted if feature is deemed Unnecessary
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +12,11 @@
 <body>
 <h2>currently booked appointments:</h2>
 <textarea>note: despite status, appointments may not actually be canceled </textarea>
+{% if appointments %}
+<form action="{{ url_for('appointments.view_appointment'}}" method="POST"
+                style="margin-top: 20px;">
+                <button type="submit" class="btn red waves-effect waves-light">Load Appointments</button>
+            </form>
 <table>
   <tr>
     <td>Pet</td>
@@ -35,6 +39,6 @@
 </ul>
 </body>
 <footer>
-        <p>&copy; 2025 k9 Deli Pet Booking</p>
+        <p>&copy; 2025 K9 Deli Pet Booking</p>
     </footer>
 </html>

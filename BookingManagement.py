@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 import os
 from Classes import database
-
 from bookingConfirm import appointments
 
 basedir = os.path.abspath(os.path.dirname(__file__))

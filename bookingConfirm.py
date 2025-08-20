@@ -57,6 +57,20 @@ def confirm_appointment(appointment_id):
         database.session.commit()
 
 
+@appointments.route('/appointments/view', methods=['POST'])
+def view_appointments():
+    pets = Pet.query_all()
+    today = datetime.now().date()
+    upcoming_appointments = Appointment.query.filter(
+        Appointment.date > today,
+        Appointment.status != 'canceled'
+    ).join(Pet).all()
+
+    return render_template('AppointmentViewer.html',
+                           upcoming_appointments=upcoming_appointments,
+                           pets=pets)
+
+
 # def allocate_employee():
 #    employee = Employee.query.all()
 #    selected_appointment = Appointment.query.get_or_404()
