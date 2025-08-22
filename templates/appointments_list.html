@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointments List</title>
+</head>
+<body>
+    <h1>Appointments List</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer Name</th>
+                <th>Pet Name</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment[0] }}</td>
+                <td>{{ appointment[1] }} {{ appointment[2] }}</td>
+                <td>{{ appointment[5] }}</td>
+                <td>{{ appointment[4] }}</td>
+                <td>{{ appointment[3] }}</td>
+                <td>{{ 'Scheduled' if appointment[6] == 1 else 'Cancelled' }}</td>
+                <td>
+                    {% if appointment[6] == 1 %}
+                    <a href="{{ url_for('cancel_appointment', appointment_id=appointment[0]) }}">Cancel</a>
+                    {% else %}
+                    <span></span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ url_for('home') }}">Back to Appointment Form</a>
+</body>
+</html>
