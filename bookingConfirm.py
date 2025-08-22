@@ -1,11 +1,21 @@
 from flask import Blueprint, current_app, render_template, request, redirect, url_for, flash
+import app
 from Classes import Appointment, Pet, Service, database, reminderMessage
 from datetime import datetime, timedelta
 from Messaging import send_message, receive_message
+import sqlite3
 
 appointments = Blueprint('appointments', __name__)
 
-
+@app.route('/appointments')
+def view_appointments():
+    conn = sqlite3.connect('appointments.db')
+    conn.row_factory = sqlite3.Row# Enable dictionary-like row access in appointments_list.html
+    c = conn.cursor()
+    c.execute('SELECT * FROM appointments')
+    appointments = c.fetchall()
+    conn.close()
+    return render_template('appointments_list.html', appointments=appointments)
 @appointments.route('/appointments/create/<int:id>', methods=['GET', 'POST'])
 def create_appointment():
     pets = Pet.query_all()

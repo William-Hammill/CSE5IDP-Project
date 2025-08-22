@@ -2,10 +2,26 @@ from flask import Flask, render_template
 import os
 from Classes import database
 from bookingConfirm import appointments
+import sqlite3
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-
+def init_db():
+    conn = sqlite3.connect('appointments.db')
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS appointments (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            customer_first TEXT,
+            customer_last TEXT,
+            appt_time TEXT,
+            appt_date TEXT,
+            pet_name TEXT,
+            appt_status INTEGER DEFAULT 1
+        )
+    ''')
+    conn.commit()
+    conn.close()
 def start_application():
     booking_application = Flask(__name__)
     booking_application.secret_key = 'password'  # Be cautious with hardcoded secrets in production
