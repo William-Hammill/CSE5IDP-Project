@@ -22,14 +22,14 @@
         <tbody>
             {% for appointment in appointments %}
             <tr>
-                <td>{{ appointment[0] }}</td>
-                <td>{{ appointment[1] }} {{ appointment[2] }}</td>
-                <td>{{ appointment[5] }}</td>
-                <td>{{ appointment[4] }}</td>
-                <td>{{ appointment[3] }}</td>
-                <td>{{ 'Scheduled' if appointment[6] == 1 else 'Cancelled' }}</td>
+                <td>{{ appointment['id'] }}</td>
+                <td>{{ appointment['customer_first'] }} {{ appointment['customer_last'] }}</td>
+                <td>{{ appointment['pet_name'] }}</td>
+                <td>{{ appointment['appt_date'] }}</td>
+                <td>{{ appointment['appt_time'] }}</td>
+                <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Cancelled' }}</td>
                 <td>
-                    {% if appointment[6] == 1 %}
+                    {% if appointment['appt_status'] == 1 %}
                     <a href="{{ url_for('cancel_appointment', appointment_id=appointment[0]) }}">Cancel</a>
                     {% else %}
                     <span></span>

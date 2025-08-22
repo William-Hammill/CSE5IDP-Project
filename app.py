@@ -56,6 +56,7 @@ def submit_appointment():
 @app.route('/appointments')
 def view_appointments():
     conn = sqlite3.connect('appointments.db')
+    conn.row_factory = sqlite3.Row# Enable dictionary-like row access in appointments_list.html
     c = conn.cursor()
     c.execute('SELECT * FROM appointments')
     appointments = c.fetchall()
