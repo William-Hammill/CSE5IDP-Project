@@ -7,17 +7,21 @@ import sqlite3
 
 appointments = Blueprint('appointments', __name__)
 
+
 @app.route('/appointments')
-def view_appointments():
+def view_appointments():  # SQLITE version from simple_form branch
     conn = sqlite3.connect('appointments.db')
-    conn.row_factory = sqlite3.Row# Enable dictionary-like row access in appointments_list.html
+    conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
     c = conn.cursor()
     c.execute('SELECT * FROM appointments')
     appointments = c.fetchall()
     conn.close()
     return render_template('appointments_list.html', appointments=appointments)
+
+
 @appointments.route('/appointments/create/<int:id>', methods=['GET', 'POST'])
 def create_appointment():
+    conn = sqlite3.connect('appointments.db')
     pets = Pet.query_all()
     pets.name = request.form.get('pet_name')
     time_string = request.form.get('appointment_time').strip()
@@ -44,10 +48,12 @@ def create_appointment():
     database.session.add(new_appointment)
     database.session.add(new_message)
     database.session.commit()
+    return (url_for('AppointmentViewer'))
 
 
 @appointments.route('/appointments/reminder/<int:id>', methods=['GET', 'POST'])
 def confirm_appointment(appointment_id):
+    conn = sqlite3.connect('appointments.db')
     appointment = Appointment.query.get_or_404(appointment_id)
     messages = reminderMessage.query_all(appointment_id)
     contact_num = '(03) 5442 8880'
@@ -68,7 +74,7 @@ def confirm_appointment(appointment_id):
 
 
 @appointments.route('/appointments/view', methods=['POST'])
-def view_appointments():
+def view_appointments():  # SQLAcademy version
     pets = Pet.query_all()
     today = datetime.now().date()
     upcoming_appointments = Appointment.query.filter(
@@ -79,18 +85,33 @@ def view_appointments():
     return render_template('AppointmentViewer.html',
                            upcoming_appointments=upcoming_appointments,
                            pets=pets)
+    return (url_for('AppointmentViewer'))
 
 
-# def allocate_employee():
-#    employee = Employee.query.all()
-#    selected_appointment = Appointment.query.get_or_404()
-#    selected_appointment.assigned_employee = employee
-#    database.session.commit()
-#    pass
+def allocate_employee(appointment_id, employee_id):
+    conn = sqlite3.connect('appointments.db')
+    c = conn.cursor()
+    c.execute('''UPDATE appointments 
+                 SET appt_employee = ?
+                 WHERE id = ?
+                 ''', (appointment_id, employee_id))
+    conn.commit()
+    conn.close()
+    return (url_for('AppointmentViewer'))
 
 
-def cancel_appointment():
-    selected_appointment = Appointment.query.get_or_404()
-    selected_appointment.status = 'canceled'
-    database.session.commit()
-    pass
+def cancel_appointment(appointment_id):
+    # selected_appointment = Appointment.query.get_or_404()
+    # selected_appointment.status = 'canceled'
+    # database.session.commit()
+    conn = sqlite3.connect('appointments.db')
+    c = conn.cursor()
+    c.execute('''
+            UPDATE appointments 
+            SET appt_status = 0
+            WHERE id = ?
+        ''', (appointment_id,))
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('view_appointments'))
