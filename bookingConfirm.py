@@ -8,7 +8,7 @@ import sqlite3
 appointments = Blueprint('appointments', __name__)
 
 
-@app.route('/appointments')
+#@app.route('/appointments')
 def view_appointments():  # SQLITE version from simple_form branch
     conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
@@ -82,9 +82,7 @@ def view_appointments():  # SQLAcademy version
         Appointment.status != 'canceled'
     ).join(Pet).all()
 
-    return render_template('AppointmentViewer.html',
-                           upcoming_appointments=upcoming_appointments,
-                           pets=pets)
+    #return render_template('AppointmentViewer.html',upcoming_appointments=upcoming_appointments,pets=pets)
     return (url_for('AppointmentViewer'))
 
 
