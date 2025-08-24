@@ -30,7 +30,7 @@ def start_application():
 
     database.init_app(booking_application)
     booking_application.register_blueprint(appointments)
-
+    init_db() #initialize sqlite database
     with booking_application.app_context():
         database.create_all()
 

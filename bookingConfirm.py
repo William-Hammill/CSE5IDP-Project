@@ -54,6 +54,8 @@ def create_appointment():
 @appointments.route('/appointments/reminder/<int:id>', methods=['GET', 'POST'])
 def confirm_appointment(appointment_id):
     conn = sqlite3.connect('appointments.db')
+    conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
+    c = conn.cursor()
     appointment = Appointment.query.get_or_404(appointment_id)
     messages = reminderMessage.query_all(appointment_id)
     contact_num = '(03) 5442 8880'
@@ -65,10 +67,24 @@ def confirm_appointment(appointment_id):
         send_message(message, appointment.client_number)
     message_response = receive_message()
     if message_response == 'Y':
+        c.execute('''
+                    UPDATE appointments 
+                    SET appt_status = 1
+                    WHERE id = ?
+                ''', (appointment_id,))
+        conn.commit()
+        conn.close()
         appointment.status = 'confirmed'
         database.session.commit()
     elif message_response == 'N' or message_response is None:
         # database.session.remove(appointments)
+        c.execute('''
+                    UPDATE appointments 
+                    SET appt_status = 0
+                    WHERE id = ?
+                ''', (appointment_id,))
+        conn.commit()
+        conn.close
         appointment.status = 'canceled'
         database.session.commit()
 
