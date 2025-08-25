@@ -15,13 +15,36 @@
         <input type="text" id="customer_last" name="customer_last" required><br><br>
 
         <label for="appt_time">Appointment Time:</label>
-        <input type="time" id="appt_time" name="appt_time" required><br><br>
+        <input type="time" id="appt_time" name="appt_time" list="times" step="3600" required><br><br>
+
+            <datalist id="times">
+                <option value="09:00:00">
+                <option value="09:30:00">
+                <option value="10:00:00">
+                <option value="10:30:00">
+                <option value="11:00:00">
+                <option value="11:30:00">
+                <option value="12:00:00">
+                <option value="12:30:00">
+                <option value="13:00:00">
+                <option value="13:30:00">
+                <option value="14:00:00">
+                <option value="14:30:00">
+                <option value="15:00:00">
+                <option value="15:30:00">
+                <option value="16:00:00">
+                <option value="16:30:00">
+                <option value="17:00:00">
+            </datalist>
 
         <label for="appt_date">Appointment Date:</label>
         <input type="date" id="appt_date" name="appt_date" required><br><br>
 
         <label for="pet_name">Pet Name:</label>
         <input type="text" id="pet_name" name="pet_name" required><br><br>
+
+        <label for="comments">Comments (if any):</label>
+        <input type="text" id="comments" name="comments"><br><br>
 
         <button type="submit">Submit</button>
     </form>

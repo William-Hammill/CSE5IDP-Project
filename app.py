@@ -16,6 +16,7 @@ def init_db():
             appt_time TEXT,
             appt_date TEXT,
             pet_name TEXT,
+            comments TEXT,
             appt_status INTEGER DEFAULT 1
         )
     ''')
@@ -38,15 +39,16 @@ def submit_appointment():
         appt_time = request.form['appt_time']
         appt_date = request.form['appt_date']
         pet_name = request.form['pet_name']
+        comments = request.form['comments']
         appt_status = 1  # Default: Scheduled
 
         # Insert data into SQLite
         conn = sqlite3.connect('appointments.db')
         c = conn.cursor()
         c.execute('''
-            INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, appt_status)
-            VALUES (?, ?, ?, ?, ?, ?)
-        ''', (first_name, last_name, appt_time, appt_date, pet_name, appt_status))
+            INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, appt_status)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (first_name, last_name, appt_time, appt_date, pet_name, comments, appt_status))
         conn.commit()
         conn.close()
 

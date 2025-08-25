@@ -16,17 +16,19 @@
                 <th>Appointment Date</th>
                 <th>Appointment Time</th>
                 <th>Status</th>
+                <th>Comments</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            {% for appointment in appointments %}
+            {% for appointment in appointments | reverse %}
             <tr>
                 <td>{{ appointment['id'] }}</td>
                 <td>{{ appointment['customer_first'] }} {{ appointment['customer_last'] }}</td>
                 <td>{{ appointment['pet_name'] }}</td>
                 <td>{{ appointment['appt_date'] }}</td>
                 <td>{{ appointment['appt_time'] }}</td>
+                <td>{{ appointment['comments'] }}</td>
                 <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Cancelled' }}</td>
                 <td>
                     {% if appointment['appt_status'] == 1 %}
