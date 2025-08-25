@@ -11,7 +11,6 @@
 </head>
 <body>
 <h1>Appointments List:</h1>
-{% if appointments %}
 <table>
     <thead>
             <tr>
@@ -32,7 +31,7 @@
                 <td>{{ appointment['pet_name'] }}</td>
                 <td>{{ appointment['appt_date'] }}</td>
                 <td>{{ appointment['appt_time'] }}</td>
-                <td>{{ 'Scheduled' if appointment['appt_status'] == 1 | 'Confirmed' if appointment['appt_status'] == 2 else 'Cancelled' }}</td>
+                <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Cancelled' }}</td>
                 <td>
                     {% if appointment['appt_status'] == 1 %}
                     <a href="{{ url_for('cancel_appointment', appointment_id=appointment[0]) }}">Cancel</a>

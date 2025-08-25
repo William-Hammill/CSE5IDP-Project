@@ -1,15 +1,14 @@
-from flask import Flask
+from flask import Flask, render_template
 import os
 # from Classes import database
 from bookingConfirm import appointments
 import sqlite3
-
 booking_application = Flask(__name__)
 
-
 # basedir = os.path.abspath(os.path.dirname(__file__))
-
-
+@booking_application.route('/')
+def home():
+    return render_template('AppointmentViewer.html')
 def init_db():
     conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
@@ -58,4 +57,4 @@ def start_application():
 
 if __name__ == '__main__':
     application = start_application()
-    application.run(debug=True, host='0.0.0.0', port=8080)
+    application.run(debug=True, host='0.0.0.0', port=5000)
