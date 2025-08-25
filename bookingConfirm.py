@@ -11,6 +11,8 @@ conn = sqlite3.connect('appointments.db')
 @appointments.route('/appointments')
 def load_page():
     return render_template('BookingLayout.html')
+
+
 @appointments.route('/appointments/view')
 def view_appointments():  # SQLITE version from simple_form branch
     # conn = sqlite3.connect('appointments.db')
@@ -58,12 +60,14 @@ def create_appointment():
                INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, appt_status)
                VALUES (?, ?, ?, ?, ?, ?, ?)
            ''', (
-        customer_first_name, customer_last_name, appointment_time, appointment_date, pets_name, comments, appointment_status))
+        customer_first_name, customer_last_name, appointment_time, appointment_date, pets_name, comments,
+        appointment_status))
     c.execute('SELECT id from appointments')
     appointment_id = c.fetchall()
     c.execute('''INSERT INTO reminders (customer_first_name, customer_last_name, customer_number, appointment_time, 
     appointment_date, pets_name, reminder_date, appointment_id) VALUES (?,?,?,?,?,?,?,?)''',
-              (customer_first_name, customer_last_name, customer_number, appointment_time, appointment_date, pets_name, reminder_date, appointment_id))
+              (customer_first_name, customer_last_name, customer_number, appointment_time, appointment_date, pets_name,
+               reminder_date, appointment_id))
     conn.commit()
     conn.close()
     return url_for('AppointmentViewer')
@@ -124,23 +128,23 @@ def confirm_appointment(appointment_id):
 # return (url_for('AppointmentViewer'))
 
 
-#def allocate_employee(appointment_id, employee_id):
-    #conn = sqlite3.connect('appointments.db')
- #   c = conn.cursor()
-  #  c.execute('''UPDATE appointments
-  #               SET appt_employee = ?
-  #               WHERE id = ?
-  #               ''', (appointment_id, employee_id))
-  #  conn.commit()
-  #  conn.close()
-  #  return redirect(url_for('AppointmentViewer'))
+# def allocate_employee(appointment_id, employee_id):
+# conn = sqlite3.connect('appointments.db')
+#   c = conn.cursor()
+#  c.execute('''UPDATE appointments
+#               SET appt_employee = ?
+#               WHERE id = ?
+#               ''', (appointment_id, employee_id))
+#  conn.commit()
+#  conn.close()
+#  return redirect(url_for('AppointmentViewer'))
 
 @appointments.route('/cancel/<int:appointment_id>')
 def cancel_appointment(appointment_id):
     # selected_appointment = Appointment.query.get_or_404()
     # selected_appointment.status = 'canceled'
     # database.session.commit()
-  #  conn = sqlite3.connect('appointments.db')
+    #  conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
     c.execute('''
             UPDATE appointments 
