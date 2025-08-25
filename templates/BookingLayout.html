@@ -10,11 +10,11 @@
     <title>K9 Deli appointment bookings</title>
 </head>
 <body>
-<ul><li><a href="AppointmentViewer.html" target='AppointmentViewer.html'>Return to appointments table</a></li></ul>
+<ul><li><a href="{{ url_for('home') }}">Return to appointments table</a></li></ul>
 <h4>Book appointment</h4>
 <p>Please enter the details for your appointment below</p>
 <div>
-    <form action="{{ url_for('appointments.create_appointment', id=appointment.id) }}" class="appointment-form">
+    <form action="{{ url_for('appointments.create_appointment') }}" class="appointment-form">
         <div class="input-field">
             <label for="new_appointment_date">Date:</label>
             <input type="text" name="appointment_date" id="new_appointment_date" class="date-picker" required>
