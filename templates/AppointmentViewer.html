@@ -11,7 +11,7 @@
 </head>
 <body>
 <h1>Appointments List:</h1>
-<table>
+<table border="1">
     <thead>
             <tr>
                 <th>ID</th>
@@ -24,7 +24,7 @@
             </tr>
         </thead>
     <tbody>
-            {% for appointment in appointments %}
+            {% for appointment in appointments | reverse %}
             <tr>
                 <td>{{ appointment['id'] }}</td>
                 <td>{{ appointment['customer_first'] }} {{ appointment['customer_last'] }}</td>

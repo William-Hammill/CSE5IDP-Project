@@ -15,30 +15,44 @@
 <p>Please enter the details for your appointment below</p>
 <div>
     <form action="{{ url_for('appointments.create_appointment') }}" class="appointment-form">
-        <div class="input-field">
-            <label for="new_appointment_date">Date:</label>
-            <input type="text" name="appointment_date" id="new_appointment_date" class="date-picker" required>
-        </div>
-        <div class="input-field">
-            <label for="new_appointment_date">Time:</label>
-            <input type="text" name="appointment_date" id="new_appointment_time" class="time-picker" required>
-        </div>
-        <div class="input-field">
-            <label for="new_client_first_name">First name:</label>
-            <textarea name="first-name" id="new_client_first_name" class="materialize-textarea required"></textarea>
-        </div>
-        <div class="input-field">
-            <label for="new_client_last_name">Last name:</label>
-            <textarea name="first-name" id="new_client_last_name" class="materialize-textarea"></textarea>
-        </div>
-        <div class="input-field">
-            <label for="new_client_number">Contact number</label>
-            <textarea name="pet-name" id="new_client_number" class="materialize-textarea"></textarea>
-        </div>
-        <div class="input-field">
-            <label for="new_pet_name">Pet name</label>
-            <textarea name="pet-name" id="new_pet_name" class="materialize-textarea"></textarea>
-        </div>
+        <label for="customer_first">First Name:</label>
+        <input type="text" id="customer_first" name="customer_first" required><br><br>
+
+        <label for="customer_last">Last Name:</label>
+        <input type="text" id="customer_last" name="customer_last" required><br><br>
+
+        <label for="appt_time">Appointment Time:</label>
+        <input type="time" id="appt_time" name="appt_time" list="times" step="3600" required><br><br>
+
+            <datalist id="times">
+                <option value="09:00:00">
+                <option value="09:30:00">
+                <option value="10:00:00">
+                <option value="10:30:00">
+                <option value="11:00:00">
+                <option value="11:30:00">
+                <option value="12:00:00">
+                <option value="12:30:00">
+                <option value="13:00:00">
+                <option value="13:30:00">
+                <option value="14:00:00">
+                <option value="14:30:00">
+                <option value="15:00:00">
+                <option value="15:30:00">
+                <option value="16:00:00">
+                <option value="16:30:00">
+                <option value="17:00:00">
+            </datalist>
+        <label for="appt_date">Appointment Date:</label>
+        <input type="date" id="appt_date" name="appt_date" required><br><br>
+
+        <label for="pet_name">Pet Name:</label>
+        <input type="text" id="pet_name" name="pet_name" required><br><br>
+
+        <label for="comments">Comments (if any):</label>
+        <input type="text" id="comments" name="comments"><br><br>
+
+        <button type="submit">Submit</button>
         <button type="submit" class="btn waves-effect waves-light">Submit details</button>
     </form>
 
