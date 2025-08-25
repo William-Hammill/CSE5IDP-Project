@@ -20,6 +20,20 @@ def init_db():
             appt_status INTEGER DEFAULT 1
         )
     ''')
+    c.execute('''
+                CREATE TABLE IF NOT EXISTS reminders (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    customer_first TEXT,
+                    customer_last TEXT,
+                    customer_number INTEGER,
+                    appt_time TEXT,
+                    appt_date TEXT,
+                    pet_name TEXT,
+                    reminder_date TEXT,
+                    appointment_id INTEGER,
+                    FOREIGN KEY(appointment_id) REFERENCES appointments(id)
+                )
+            ''')
     conn.commit()
     conn.close()
 def start_application():
