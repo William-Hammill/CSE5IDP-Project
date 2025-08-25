@@ -9,6 +9,9 @@ conn = sqlite3.connect('appointments.db')
 
 
 @appointments.route('/appointments')
+def load_page():
+    return render_template('BookingLayout.html')
+@appointments.route('/appointments/view')
 def view_appointments():  # SQLITE version from simple_form branch
     # conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
