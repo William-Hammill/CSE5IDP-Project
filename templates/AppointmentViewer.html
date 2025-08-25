@@ -10,33 +10,42 @@
     <title>K9 Deli pet grooming appointments</title>
 </head>
 <body>
-<h2>currently booked appointments:</h2>
-<p>note: despite status, appointments may not actually be canceled </p>
+<h1>Appointments List:</h1>
 {% if appointments %}
-<form action="{{ url_for('appointments.view_appointment'}}" method="POST"
-                style="margin-top: 20px;">
-                <button type="submit" class="btn red waves-effect waves-light">Load Appointments</button>
-            </form>
 <table>
-  <tr>
-    <td>Pet</td>
-    <td>Client Name</td>
-    <td>Appointment-Time</td>
-    <td>Appointment Date</td>
-    <td>Appointment status</td>
-  </tr>
-    {% for appointment in appointments%}
-    <tr>
-        <td>{{ appointment.pet.pet_name }}</td>
-        <td>{{ appointment.client_name }}</td>
-        <td>{{ appointment.appointment_time }} </td>
-        <td>{{ appointment.appointment_date }}</td>
-        <td>{{ appointment.status }} </td>
-    </tr>
+    <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer Name</th>
+                <th>Pet Name</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment['id'] }}</td>
+                <td>{{ appointment['customer_first'] }} {{ appointment['customer_last'] }}</td>
+                <td>{{ appointment['pet_name'] }}</td>
+                <td>{{ appointment['appt_date'] }}</td>
+                <td>{{ appointment['appt_time'] }}</td>
+                <td>{{ 'Scheduled' if appointment['appt_status'] == 1 | 'Confirmed' if appointment['appt_status'] == 2 else 'Cancelled' }}</td>
+                <td>
+                    {% if appointment['appt_status'] == 1 %}
+                    <a href="{{ url_for('cancel_appointment', appointment_id=appointment[0]) }}">Cancel</a>
+                    {% else %}
+                    <span></span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
 </table>
-<ul>
-            <li><a href="BookingLayout.html" target='BookingLayout.html'>Click Here to book an appointment</a></li>
-</ul>
+<br>
+    <a href="BookingLayout.html" target='BookingLayout.html'>Click Here to book an appointment</a>
 </body>
 <footer>
         <p>&copy; 2025 K9 Deli Pet Booking</p>

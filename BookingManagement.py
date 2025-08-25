@@ -1,10 +1,14 @@
-from flask import Flask, render_template
+from flask import Flask
 import os
-from Classes import database
+# from Classes import database
 from bookingConfirm import appointments
 import sqlite3
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+booking_application = Flask(__name__)
+
+
+# basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 def init_db():
     conn = sqlite3.connect('appointments.db')
@@ -17,6 +21,7 @@ def init_db():
             appt_time TEXT,
             appt_date TEXT,
             pet_name TEXT,
+            comments TEXT,
             appt_status INTEGER DEFAULT 1
         )
     ''')
@@ -36,19 +41,20 @@ def init_db():
             ''')
     conn.commit()
     conn.close()
+
+
 def start_application():
-    booking_application = Flask(__name__)
-    booking_application.secret_key = 'password'  # Be cautious with hardcoded secrets in production
-    booking_application.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "database", "booking.sqlite3")}'
-    booking_application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # booking_application.secret_key = 'password'  # Be cautious with hardcoded secrets in production
+    # booking_application.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "database",
+    # "booking.sqlite3")}' booking_application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    database.init_app(booking_application)
+    # database.init_app(booking_application)
     booking_application.register_blueprint(appointments)
-    init_db() #initialize sqlite database
-    with booking_application.app_context():
-        database.create_all()
-
+    init_db()  # initialize sqlite database
+    # with booking_application.app_context():
+    #    database.create_all()
     return booking_application
+
 
 if __name__ == '__main__':
     application = start_application()

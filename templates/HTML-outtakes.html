@@ -11,5 +11,24 @@
         </div>
 
 <button class="{{ url_for('appointments.view_appointments') }}">Book Appointment</button>
+<form action="{{ url_for('appointments.view_appointment'}}" method="POST"
+                style="margin-top: 20px;">
+                <button type="submit" class="btn red waves-effect waves-light">Load Appointments</button>
+            </form>
+ <tr>
+    <td>Pet</td>
+    <td>Client Name</td>
+    <td>Appointment-Time</td>
+    <td>Appointment Date</td>
+    <td>Appointment status</td>
+  </tr>
+    {% for appointment in appointments%}
+    <tr>
+        <td>{{ appointment.pet.pet_name }}</td>
+        <td>{{ appointment.client_name }}</td>
+        <td>{{ appointment.appointment_time }} </td>
+        <td>{{ appointment.appointment_date }}</td>
+        <td>{{ appointment.status }} </td>
+    </tr>
 </body>
 </html>
