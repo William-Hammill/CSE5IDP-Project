@@ -15,8 +15,9 @@
                 <th>Pet Name</th>
                 <th>Appointment Date</th>
                 <th>Appointment Time</th>
-                <th>Status</th>
+                <th>Phone#</th>
                 <th>Comments</th>
+                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
                 <td>{{ appointment['pet_name'] }}</td>
                 <td>{{ appointment['appt_date'] }}</td>
                 <td>{{ appointment['appt_time'] }}</td>
+                <td>{{ appointment['phone_no'] }}</td>
                 <td>{{ appointment['comments'] }}</td>
                 <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Cancelled' }}</td>
                 <td>
