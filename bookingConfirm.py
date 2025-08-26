@@ -6,6 +6,7 @@ import sqlite3
 
 appointments = Blueprint('appointments', __name__)
 conn = sqlite3.connect('appointments.db')
+c = conn.cursor()
 
 
 @appointments.route('/appointments')
@@ -17,7 +18,7 @@ def load_page():
 def view_appointments():  # SQLITE version from simple_form branch
     # conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
-    c = conn.cursor()
+    # c = conn.cursor()
     c.execute('SELECT * FROM appointments')
     booked_appointments = c.fetchall()
     conn.close()
@@ -29,13 +30,13 @@ def create_appointment():
     # conn = sqlite3.connect('appointments.db')
     # pets = Pet.query_all()
     pets_name = request.form['pet_name']
-    time_string = request.form['appointment_time'].strip()
-    date_string = request.form['appointment_date']
-    appointment_date = datetime.strptime(date_string, '%Y-%m-%d').date()
-    appointment_time = datetime.strptime(time_string, '%I:%M %p').strftime('%H:%M')
+    appointment_time = request.form['appt_time'].strip()
+    appt_date = request.form['appt_date']
+    appointment_date = datetime.strptime(appt_date, '%Y-%m-%d').date()
+    # appointment_time = datetime.strptime(time_string, '%I:%M %p').strftime('%H:%M')
     customer_number = request.form['customer_number']
-    customer_first_name = request.form['customer_first_name']
-    customer_last_name = request.form['customer_last_name']
+    customer_first_name = request.form['customer_first']
+    customer_last_name = request.form['customer_last']
     comments = request.form['comments']
     appointment_status = 1  # 1 = scheduled, 0 = canceled, 2 = confirmed
     # new_appointment = Appointment(pet_name=pets.name, customer_first_name=customer_first_name,
@@ -55,12 +56,12 @@ def create_appointment():
     # database.session.add(new_appointment)
     # database.session.add(new_message)
     # database.session.commit()
-    c = conn.cursor()
+    # conn2 = conn.cursor()
     c.execute('''
                INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, appt_status)
                VALUES (?, ?, ?, ?, ?, ?, ?)
            ''', (
-        customer_first_name, customer_last_name, appointment_time, appointment_date, pets_name, comments,
+        customer_first_name, customer_last_name, appointment_time, appt_date, pets_name, comments,
         appointment_status))
     c.execute('SELECT id from appointments')
     appointment_id = c.fetchall()
@@ -77,7 +78,7 @@ def create_appointment():
 def confirm_appointment(appointment_id):
     # conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
-    c = conn.cursor()
+    # c = conn.cursor()
     # appointment = Appointment.query.get_or_404(appointment_id)
     # messages = reminderMessage.query_all(appointment_id)
     contact_num = '(03) 5442 8880'
@@ -145,7 +146,7 @@ def cancel_appointment(appointment_id):
     # selected_appointment.status = 'canceled'
     # database.session.commit()
     #  conn = sqlite3.connect('appointments.db')
-    c = conn.cursor()
+    # c = conn.cursor()
     c.execute('''
             UPDATE appointments 
             SET appt_status = 0
