@@ -58,18 +58,20 @@ def create_appointment():
     # database.session.commit()
     c = conn.cursor()
     c.execute('''
-               INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, appt_status)
-               VALUES (?, ?, ?, ?, ?, ?, ?)
+               INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, appt_status)
+               VALUES (?, ?, ?, ?, ?, ?)
            ''', (
-        customer_first_name, customer_last_name, appointment_time, appt_date, pets_name, comments,
+        customer_first_name, customer_last_name, appointment_time, appt_date, pets_name,
         appointment_status))
+    print('Successfully added appointment')
     c.execute('SELECT id from appointments')
     appointment_id = c.fetchall()
-    c.execute('''INSERT INTO reminders (customer_first_name, customer_last_name, customer_number, appointment_time, 
-    appointment_date, pets_name, reminder_date, appointment_id) VALUES (?,?,?,?,?,?,?,?)''',
-              (customer_first_name, customer_last_name, customer_number, appointment_time, appointment_date, pets_name,
+    c.execute('''INSERT INTO reminders (customer_first, customer_last, customer_number, appt_time, 
+    appt_date, pet_name, reminder_date, appointment_id) VALUES (?,?,?,?,?,?,?,?)''',
+              (customer_first_name, customer_last_name, customer_number, appointment_time, appt_date, pets_name,
                reminder_date, appointment_id))
     conn.commit()
+    print('Successfully added reminder')
     conn.close()
     return url_for('AppointmentViewer')
 
@@ -154,4 +156,4 @@ def cancel_appointment(appointment_id):
         ''', (appointment_id,))
     conn.commit()
     conn.close()
-    return redirect(url_for('view_appointments'))
+    return redirect(url_for('AppointmentViewer'))

@@ -13,17 +13,17 @@ def init_db():
     conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
     c.execute('''
-        CREATE TABLE IF NOT EXISTS appointments (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            customer_first TEXT,
-            customer_last TEXT,
-            appt_time TEXT,
-            appt_date TEXT,
-            pet_name TEXT,
-            comments TEXT,
-            appt_status INTEGER DEFAULT 1
-        )
-    ''')
+            CREATE TABLE IF NOT EXISTS appointments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                customer_first TEXT,
+                customer_last TEXT,
+                appt_time TEXT,
+                appt_date TEXT,
+                pet_name TEXT,
+                comments TEXT,
+                appt_status INTEGER DEFAULT 1
+            )
+        ''')
     c.execute('''
                 CREATE TABLE IF NOT EXISTS reminders (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
