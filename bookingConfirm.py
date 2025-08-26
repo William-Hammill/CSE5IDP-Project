@@ -5,8 +5,8 @@ from Messaging import send_message, receive_message, send_placeholder, recieve_p
 import sqlite3
 
 appointments = Blueprint('appointments', __name__)
-conn = sqlite3.connect('appointments.db')
-c = conn.cursor()
+#conn = sqlite3.connect('appointments.db')
+#c = conn.cursor()
 
 
 @appointments.route('/appointments')
@@ -16,9 +16,9 @@ def load_page():
 
 @appointments.route('/appointments/view')
 def view_appointments():  # SQLITE version from simple_form branch
-    # conn = sqlite3.connect('appointments.db')
+    conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
-    # c = conn.cursor()
+    c = conn.cursor()
     c.execute('SELECT * FROM appointments')
     booked_appointments = c.fetchall()
     conn.close()
@@ -27,7 +27,7 @@ def view_appointments():  # SQLITE version from simple_form branch
 
 @appointments.route('/create_appointment', methods=['POST'])
 def create_appointment():
-    # conn = sqlite3.connect('appointments.db')
+    conn = sqlite3.connect('appointments.db')
     # pets = Pet.query_all()
     pets_name = request.form['pet_name']
     appointment_time = request.form['appt_time'].strip()
@@ -56,7 +56,7 @@ def create_appointment():
     # database.session.add(new_appointment)
     # database.session.add(new_message)
     # database.session.commit()
-    # conn2 = conn.cursor()
+    c = conn.cursor()
     c.execute('''
                INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, appt_status)
                VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -76,9 +76,9 @@ def create_appointment():
 
 @appointments.route('/confirm_appointment/<int:id>', methods=['GET', 'POST'])
 def confirm_appointment(appointment_id):
-    # conn = sqlite3.connect('appointments.db')
+    conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
-    # c = conn.cursor()
+    c = conn.cursor()
     # appointment = Appointment.query.get_or_404(appointment_id)
     # messages = reminderMessage.query_all(appointment_id)
     contact_num = '(03) 5442 8880'
@@ -145,8 +145,8 @@ def cancel_appointment(appointment_id):
     # selected_appointment = Appointment.query.get_or_404()
     # selected_appointment.status = 'canceled'
     # database.session.commit()
-    #  conn = sqlite3.connect('appointments.db')
-    # c = conn.cursor()
+    conn = sqlite3.connect('appointments.db')
+    c = conn.cursor()
     c.execute('''
             UPDATE appointments 
             SET appt_status = 0
