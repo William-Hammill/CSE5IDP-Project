@@ -31,6 +31,7 @@
                 <td>{{ appointment['pet_name'] }}</td>
                 <td>{{ appointment['appt_date'] }}</td>
                 <td>{{ appointment['appt_time'] }}</td>
+                <td>{{ appointment['comments'] }}</td>
                 <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Cancelled' }}</td>
                 <td>
                     {% if appointment['appt_status'] == 1 %}
