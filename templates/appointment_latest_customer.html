@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Made!</title>
+</head>
+<body>
+    <h1>Appointments List</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Pet Name</th>
+                <th>Appointment Date</th>
+                <th>Appointment Time</th>
+                <th>Phone#</th>
+                <th>Comments</th>
+            </tr>
+        </thead>
+        <p>Thank you for booking an appointment! <br/>
+        Here are the details: <br/></p>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>{{ appointment['customer_first'] }} {{ appointment['customer_last'] }}</td>
+                <td>{{ appointment['pet_name'] }}</td>
+                <td>{{ appointment['appt_date'] }}</td>
+                <td>{{ appointment['appt_time'] }}</td>
+                <td>{{ appointment['phone_no'] }}</td>
+                <td>{{ appointment['comments'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{{ url_for('view_appointments') }}">View All Appointments</a><br/>
+    <a href="{{ url_for('home') }}">Back to Appointment Form</a>
+</body>
+</html>
