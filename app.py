@@ -17,6 +17,7 @@ def init_db():
             appt_date TEXT,
             pet_name TEXT,
             comments TEXT,
+            phone_no TEXT,
             appt_status INTEGER DEFAULT 1
         )
     ''')
@@ -39,21 +40,32 @@ def submit_appointment():
         appt_time = request.form['appt_time']
         appt_date = request.form['appt_date']
         pet_name = request.form['pet_name']
-        comments = request.form['comments']
         phone_no = request.form['phone_no']
+        comments = request.form['comments']
         appt_status = 1  # Default: Scheduled
 
         # Insert data into SQLite
         conn = sqlite3.connect('appointments.db')
         c = conn.cursor()
         c.execute('''
-            INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, phone_no, appt_status)
+            INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, phone_no, comments, appt_status)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (first_name, last_name, appt_time, appt_date, pet_name, comments, phone_no, appt_status))
+        ''', (first_name, last_name, appt_time, appt_date, pet_name, phone_no, comments, appt_status))
         conn.commit()
         conn.close()
 
-        return redirect(url_for('view_appointments'))
+        return redirect(url_for('view_appointments_latest'))
+
+# Route to view latest/just-booked appointment
+@app.route('/appointments_latest')
+def view_appointments_latest():
+    conn = sqlite3.connect('appointments.db')
+    conn.row_factory = sqlite3.Row# Enable dictionary-like row access in appointments_list.html
+    c = conn.cursor()
+    c.execute('SELECT customer_first, customer_last, pet_name, appt_time, appt_date, phone_no, comments FROM appointments ORDER BY id DESC LIMIT 1')
+    appointments = c.fetchall()
+    conn.close()
+    return render_template('appointment_latest_customer.html', appointments=appointments)
 
 # Route to view appointments
 @app.route('/appointments')
