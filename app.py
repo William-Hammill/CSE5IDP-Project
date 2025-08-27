@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # SQLite database setup (ensure the database exists)
 def init_db():
-    conn = sqlite3.connect('appointments.db')
+    conn = sqlite3.connect('appointments-old.db')
     c = conn.cursor()
     c.execute('''
         CREATE TABLE IF NOT EXISTS appointments (
@@ -41,7 +41,7 @@ def submit_appointment():
         appt_status = 1  # Default: Scheduled
 
         # Insert data into SQLite
-        conn = sqlite3.connect('appointments.db')
+        conn = sqlite3.connect('appointments-old.db')
         c = conn.cursor()
         c.execute('''
             INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, appt_status)
@@ -55,7 +55,7 @@ def submit_appointment():
 # Route to view appointments
 @app.route('/appointments')
 def view_appointments():
-    conn = sqlite3.connect('appointments.db')
+    conn = sqlite3.connect('appointments-old.db')
     conn.row_factory = sqlite3.Row# Enable dictionary-like row access in appointments_list.html
     c = conn.cursor()
     c.execute('SELECT * FROM appointments')
@@ -66,7 +66,7 @@ def view_appointments():
 # Route to cancel an appointment
 @app.route('/cancel/<int:appointment_id>')
 def cancel_appointment(appointment_id):
-    conn = sqlite3.connect('appointments.db')
+    conn = sqlite3.connect('appointments-old.db')
     c = conn.cursor()
     c.execute('''
         UPDATE appointments 

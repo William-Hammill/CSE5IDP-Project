@@ -5,7 +5,7 @@ from Messaging import send_message, receive_message, send_placeholder, recieve_p
 import sqlite3
 
 appointments = Blueprint('appointments', __name__)
-#conn = sqlite3.connect('appointments.db')
+#conn = sqlite3.connect('appointments-old.db')
 #c = conn.cursor()
 
 
@@ -32,7 +32,7 @@ def create_appointment():
     pets_name = request.form['pet_name']
     appointment_time = request.form['appt_time'].strip()
     appt_date = request.form['appt_date']
-    appointment_date = datetime.strptime(appt_date, '%Y-%m-%d').date()
+    appointment_date = datetime.strptime(appt_date, '%Y-%m-%d')
     # appointment_time = datetime.strptime(time_string, '%I:%M %p').strftime('%H:%M')
     customer_number = request.form['customer_number']
     customer_first_name = request.form['customer_first']
@@ -46,7 +46,8 @@ def create_appointment():
     #                               assigned_employee=assigned_employee,
     #                               status='unknown')
     date_notice = timedelta(days=1)  # code to determine date for sending reminder/confirmation messages
-    reminder_date = appointment_date - date_notice  # sets reminder send-date to day before appointment booking
+    reminder_date = appointment_date - date_notice # sets reminder send-date to day before appointment booking
+    send_date = datetime.strftime(reminder_date,'%Y-%m-%d')
     # new_message = reminderMessage(client_name=new_appointment.customer_first_name,
     #                               client_number=new_appointment.customer_number,
     #                               pet_name=new_appointment.pet_name,
@@ -58,22 +59,23 @@ def create_appointment():
     # database.session.commit()
     c = conn.cursor()
     c.execute('''
-               INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, appt_status)
-               VALUES (?, ?, ?, ?, ?, ?)
+               INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, appt_status)
+               VALUES (?, ?, ?, ?, ?, ?, ?)
            ''', (
-        customer_first_name, customer_last_name, appointment_time, appt_date, pets_name,
+        customer_first_name, customer_last_name, appointment_time, appt_date, pets_name,comments,
         appointment_status))
     print('Successfully added appointment')
     c.execute('SELECT id from appointments')
-    appointment_id = c.fetchall()
+    appointment_id = c.fetchone()
+    appointment_reminder_id = [int(_) for _ in appointment_id]
     c.execute('''INSERT INTO reminders (customer_first, customer_last, customer_number, appt_time, 
     appt_date, pet_name, reminder_date, appointment_id) VALUES (?,?,?,?,?,?,?,?)''',
               (customer_first_name, customer_last_name, customer_number, appointment_time, appt_date, pets_name,
-               reminder_date, appointment_id))
+               send_date, appointment_reminder_id[0]))
     conn.commit()
     print('Successfully added reminder')
     conn.close()
-    return url_for('AppointmentViewer')
+    return redirect(url_for('appointments.view_appointments'))
 
 
 @appointments.route('/confirm_appointment/<int:id>', methods=['GET', 'POST'])
@@ -132,7 +134,7 @@ def confirm_appointment(appointment_id):
 
 
 # def allocate_employee(appointment_id, employee_id):
-# conn = sqlite3.connect('appointments.db')
+# conn = sqlite3.connect('appointments-old.db')
 #   c = conn.cursor()
 #  c.execute('''UPDATE appointments
 #               SET appt_employee = ?
@@ -156,4 +158,4 @@ def cancel_appointment(appointment_id):
         ''', (appointment_id,))
     conn.commit()
     conn.close()
-    return redirect(url_for('AppointmentViewer'))
+    return redirect(url_for('appointments.view_appointments'))
