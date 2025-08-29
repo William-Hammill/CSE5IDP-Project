@@ -1,14 +1,25 @@
 from flask import Flask, render_template
 import os
 # from Classes import database
+from datetime import datetime
 from bookingConfirm import appointments
 import sqlite3
+
 booking_application = Flask(__name__)
+
 
 # basedir = os.path.abspath(os.path.dirname(__file__))
 @booking_application.route('/')
 def home():
-    return render_template('AppointmentViewer.html')
+    current_datetime = datetime.now()
+    current_time = current_datetime.time()
+    if current_time == '9:00':
+        appointments.confirm_appointment()
+        return render_template('AppointmentViewer.html')
+    else:
+        return render_template('AppointmentViewer.html')
+
+
 def init_db():
     conn = sqlite3.connect('appointments.db')
     c = conn.cursor()

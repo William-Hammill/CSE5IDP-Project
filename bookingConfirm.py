@@ -88,13 +88,14 @@ def confirm_appointment(appointment_id):
         thanks_message = 'Thank you for confirming your appointment with us'
         send_placeholder(thanks_message, messages.customer_number)
     elif message_response == 'N' or message_response is None:
-        c.execute('''
-                    UPDATE appointments 
-                    SET appt_status = 0
-                    WHERE id = ?
-                ''', (appointment_id,))
-        conn.commit()
-        conn.close()
+       cancel_appointment(messages.appointment_id)
+       # c.execute('''
+       #             UPDATE appointments
+       #             SET appt_status = 0
+       #             WHERE id = ?
+       #         ''', (appointment_id,))
+       # conn.commit()
+       # conn.close()
 
 # def allocate_employee(appointment_id, employee_id):
 # conn = sqlite3.connect('appointments-old.db')
