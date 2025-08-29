@@ -1,13 +1,9 @@
 from flask import Flask, render_template
-import os
-# from Classes import database
 from datetime import datetime
 from bookingConfirm import appointments
 import sqlite3
 
 booking_application = Flask(__name__)
-
-
 # basedir = os.path.abspath(os.path.dirname(__file__))
 @booking_application.route('/')
 def home():
@@ -54,15 +50,8 @@ def init_db():
 
 
 def start_application():
-    # booking_application.secret_key = 'password'  # Be cautious with hardcoded secrets in production
-    # booking_application.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "database",
-    # "booking.sqlite3")}' booking_application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    # database.init_app(booking_application)
     booking_application.register_blueprint(appointments)
     init_db()  # initialize sqlite database
-    # with booking_application.app_context():
-    #    database.create_all()
     return booking_application
 
 
