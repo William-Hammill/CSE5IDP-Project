@@ -6,7 +6,6 @@ import sqlite3
 appointments = Blueprint('appointments', __name__)
 
 
-
 @appointments.route('/appointments')
 def load_page():
     return render_template('BookingLayout.html')
@@ -37,14 +36,14 @@ def create_appointment():
     comments = request.form['comments']
     appointment_status = 1  # 1 = scheduled, 0 = canceled, 2 = confirmed
     date_notice = timedelta(days=1)  # code to determine date for sending reminder/confirmation messages
-    reminder_date = appointment_date - date_notice # sets reminder send-date to day before appointment booking
-    send_date = datetime.strftime(reminder_date,'%Y-%m-%d')
+    reminder_date = appointment_date - date_notice  # sets reminder send-date to day before appointment booking
+    send_date = datetime.strftime(reminder_date, '%Y-%m-%d')
     c = conn.cursor()
     c.execute('''
                INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, appt_status)
                VALUES (?, ?, ?, ?, ?, ?, ?)
            ''', (
-        customer_first_name, customer_last_name, appointment_time, appt_date, pets_name,comments,
+        customer_first_name, customer_last_name, appointment_time, appt_date, pets_name, comments,
         appointment_status))
     print('Successfully added appointment')
     c.execute('SELECT id from appointments')
@@ -69,33 +68,34 @@ def confirm_appointment(appointment_id):
     current_timedate = datetime.now()
     current_time = current_timedate.time()
     current_date = current_timedate.date()
-    c.execute('''SELECT reminder_date, customer_first_name, customer_number, pets_name, appointment_date, 
-    appointment_time FROM reminders WHERE reminder_date = ?''', (current_date,))
-    messages = c.fetchall()
-    message = f'Hello {messages.customer_first_name}, This is a reminder of your appointment at K9-Deli for {messages.pet_name} scheduled for {messages.appointment_date} at {messages.appointment_time}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule please ring {contact_num} '
-    if current_time == '09:00' & current_date == messages.reminder_date:
-        send_placeholder(message, messages.customer_number)
+    if current_time == '09:00':  # & current_date == messages.reminder_date:
+        c.execute('''SELECT reminder_date, customer_first_name, customer_number, pets_name, appointment_date, 
+            appointment_time FROM reminders WHERE reminder_date = ? AND appointment_id = ?''', (current_date, appointment_id))
+        messages = c.fetchall()
+        message = f'Hello {messages[1]}, This is a reminder of your appointment at K9-Deli for {messages[3]} scheduled for {messages[4]} at {messages[5]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule please ring {contact_num} '
+        send_placeholder(message, messages[2])
         # send_message(message, appointment.customer_number)
-    message_response = recieve_placeholder()
-    if message_response == 'Y':
-        c.execute('''
+        message_response = recieve_placeholder()
+        if message_response == 'Y':
+            c.execute('''
                     UPDATE appointments 
                     SET appt_status = 2
                     WHERE id = ?
                 ''', (appointment_id,))
-        conn.commit()
-        conn.close()
-        thanks_message = 'Thank you for confirming your appointment with us'
-        send_placeholder(thanks_message, messages.customer_number)
-    elif message_response == 'N' or message_response is None:
-       cancel_appointment(messages.appointment_id)
-       # c.execute('''
-       #             UPDATE appointments
-       #             SET appt_status = 0
-       #             WHERE id = ?
-       #         ''', (appointment_id,))
-       # conn.commit()
-       # conn.close()
+            conn.commit()
+            conn.close()
+            thanks_message = 'Thank you for confirming your appointment with us'
+            send_placeholder(thanks_message, messages.customer_number)
+        elif message_response == 'N' or message_response is None:
+            cancel_appointment(appointment_id)
+        # c.execute('''
+        #             UPDATE appointments
+        #             SET appt_status = 0
+        #             WHERE id = ?
+        #         ''', (appointment_id,))
+        # conn.commit()
+        # conn.close()
+
 
 # def allocate_employee(appointment_id, employee_id):
 # conn = sqlite3.connect('appointments-old.db')

@@ -40,6 +40,9 @@
                     <span></span>
                     {% endif %}
                 </td>
+                <td>
+                    <a href="{{ url_for('appointments.Confirm_appointment', appointment_id=appointment[0]) }}">Test messaging</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
