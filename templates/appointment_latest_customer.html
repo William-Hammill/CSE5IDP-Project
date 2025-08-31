@@ -12,8 +12,7 @@
             <tr>
                 <th>Customer Name</th>
                 <th>Pet Name</th>
-                <th>Appointment Date</th>
-                <th>Appointment Time</th>
+                <th>Appointment Date Time</th>
                 <th>Phone#</th>
                 <th>Comments</th>
             </tr>
@@ -25,8 +24,7 @@
             <tr>
                 <td>{{ appointment['customer_first'] }} {{ appointment['customer_last'] }}</td>
                 <td>{{ appointment['pet_name'] }}</td>
-                <td>{{ appointment['appt_date'] }}</td>
-                <td>{{ appointment['appt_time'] }}</td>
+                <td>{{ appointment['appt_datetime'] }}</td>
                 <td>{{ appointment['phone_no'] }}</td>
                 <td>{{ appointment['comments'] }}</td>
             </tr>

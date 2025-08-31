@@ -14,6 +14,5 @@ python app.py
 
 # Notes:
 
-- [WIP] Appointment time constraints + selection. So far I can only make it so that the customer can pick an hourly time, but not half-hourly.
-    - Back-end-sided validation for time selection; throw an error at  customer for picking a time like 12:37PM. It must be a valid (half-)hourly time for an appointment. 
+- [Mostly ~done] Appointment time constraints + selection. Now with a working implementation of appointment time reservation. A customer can book for, say, 12:00PM, then the next customer that attempst to book for this time will be met with an error telling them this timeslot clashes with another customer's appointment. 
 - [To-do] CSS styles
