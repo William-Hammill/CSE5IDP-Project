@@ -19,8 +19,10 @@
                 <th>Pet Name</th>
                 <th>Appointment Date</th>
                 <th>Appointment Time</th>
+                <th>Comments</th>
                 <th>Status</th>
                 <th>Action</th>
+                <th>Messaging</th>
             </tr>
         </thead>
     <tbody>
@@ -41,7 +43,11 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ url_for('appointments.Confirm_appointment', appointment_id=appointment[0]) }}">Test messaging</a>
+                    {% if appointment['appt_status'] == 1 %}
+                    <a href="{{ url_for('appointments.confirm_appointment', appointment_id=appointment[0]) }}">Test messaging</a>
+                    {% else %}
+                    <span></span>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
