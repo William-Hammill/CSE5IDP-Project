@@ -17,12 +17,13 @@ def home():
     # conn.close()
     current_datetime = datetime.now()
     current_time = current_datetime.time()
-    current_date = current_datetime.date()
+
     # return render_template('AppointmentViewer.html', appointments=booked_appointments)
     if current_time == '9:00':
-        c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ?''', current_date)
+        current_date = current_datetime.date()
+        c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''', current_date)
         reminder_messages = c.fetchone()
-        appointment_reminder_id = [int(_) for _ in reminder_messages]
+        appointment_reminder_id = int(reminder_messages[0])
         appointments.confirm_appointment(appointment_reminder_id)
         conn.close()
         return render_template('AppointmentViewer.html', appointments=booked_appointments)
@@ -39,6 +40,7 @@ def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 customer_first TEXT,
                 customer_last TEXT,
+                customer_number INTEGER,
                 appt_time TEXT,
                 appt_date TEXT,
                 pet_name TEXT,
