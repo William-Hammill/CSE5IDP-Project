@@ -21,14 +21,15 @@ def receive_message():
 
 
 def send_placeholder(contents, number):
-    account_sid = ''
-    acc_token = ''
-    message_client = Client(account_sid, acc_token)
-    confirm_message = message_client.messages.create(body=contents,
-                                                     from_='+12674294612',  # twilio number
-                                                     to=number),
-    return "message has been sent"
+   # account_sid = ''
+    #acc_token = ''
+    #message_client = Client(account_sid, acc_token)
+    #confirm_message = message_client.messages.create(body=contents,
+     #                                                from_='+12674294612',  # twilio number
+     #                                                to=number),
+   print(contents)
+   return "message has been sent"
 
 
 def recieve_placeholder():
-    return 'Y'
+    return 'N'
