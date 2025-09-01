@@ -51,7 +51,7 @@ def submit_appointment():
         existing_appointments = c.fetchall()
         conn.close()
         if existing_appointments:
-            return "This appointment time is already booked. Please select another time.", 400
+            return "This appointment time is already booked. Please select another time." + render_template('appointment_form.html'), 400
         # Insert data into SQLite
         conn = sqlite3.connect('appointments.db')
         c = conn.cursor()
@@ -61,7 +61,7 @@ def submit_appointment():
         ''', (first_name, last_name, appt_datetime, pet_name, comments, phone_no, 1))
         conn.commit()
         conn.close()
-        return redirect(url_for('view_appointments'))
+        return redirect(url_for('view_appointments_latest'))
 
 
 # Route to view latest/just-booked appointment
@@ -79,7 +79,7 @@ def view_appointments_latest():
 @app.route('/appointments')
 def view_appointments():
     conn = sqlite3.connect('appointments.db')
-    conn.row_factory = sqlite3.Row# Enable dictionary-like row access in appointments_list.html
+    conn.row_factory = sqlite3.Row # Enable dictionary-like row access in appointments_list.html
     c = conn.cursor()
     c.execute('SELECT * FROM appointments')
     appointments = c.fetchall()
