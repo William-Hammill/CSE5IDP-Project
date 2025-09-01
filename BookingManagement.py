@@ -4,6 +4,8 @@ from bookingConfirm import appointments
 import sqlite3
 
 booking_application = Flask(__name__)
+
+
 # basedir = os.path.abspath(os.path.dirname(__file__))
 @booking_application.route('/')
 def home():
@@ -12,17 +14,21 @@ def home():
     c = conn.cursor()
     c.execute('SELECT * FROM appointments')
     booked_appointments = c.fetchall()
-    conn.close()
-    #current_datetime = datetime.now()
-   #current_time = current_datetime.time()
-    #current_date = current_datetime.date()
-    return render_template('AppointmentViewer.html', appointments=booked_appointments)
-    #if current_time == '9:00':
-    #    c.execute('SELECT * FROM reminders WHERE remindertime = ?'(current_date))
-    #    appointments.confirm_appointment()
-    #    return render_template('AppointmentViewer.html', appointments=booked_appointments)
-    #else:
-    #    return render_template('AppointmentViewer.html', appointments=booked_appointments)
+    # conn.close()
+    current_datetime = datetime.now()
+    current_time = current_datetime.time()
+    current_date = current_datetime.date()
+    # return render_template('AppointmentViewer.html', appointments=booked_appointments)
+    if current_time == '9:00':
+        c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ?''', current_date)
+        reminder_messages = c.fetchone()
+        appointment_reminder_id = [int(_) for _ in reminder_messages]
+        appointments.confirm_appointment(appointment_reminder_id)
+        conn.close()
+        return render_template('AppointmentViewer.html', appointments=booked_appointments)
+    else:
+        conn.close()
+        return render_template('AppointmentViewer.html', appointments=booked_appointments)
 
 
 def init_db():
