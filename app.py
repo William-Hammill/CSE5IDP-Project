@@ -17,7 +17,7 @@ def init_db():
             pet_name TEXT,
             comments TEXT,
             phone_no TEXT,
-            appt_status INTEGER DEFAULT 1
+            appt_status INTEGER DEFAULT 1 -- 1 Scheduled, 0 Cancelled, 2 Done
         )
     ''')
     conn.commit()
@@ -78,9 +78,20 @@ def view_appointments_latest():
 # Route to view appointments
 @app.route('/appointments')
 def view_appointments():
+    # Current time so the db can refresh its appt_status' 
+    # and mark past appointments as 'Done'
+    current_time = datetime.now()
+
     conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row # Enable dictionary-like row access in appointments_list.html
     c = conn.cursor()
+
+    c.execute(''' 
+        UPDATE appointments SET appt_status = 2 -- 2 = Done
+        WHERE appt_datetime < ? AND appt_status = 1
+    ''', (current_time,))
+    conn.commit()
+
     c.execute('SELECT * FROM appointments')
     appointments = c.fetchall()
     conn.close()
