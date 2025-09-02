@@ -32,4 +32,4 @@ def send_placeholder(contents, number):
 
 
 def recieve_placeholder():
-    return 'N'
+    return 'Y'

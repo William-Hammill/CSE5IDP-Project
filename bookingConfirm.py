@@ -86,6 +86,13 @@ def confirm_appointment(appointment_id):
     # send_message(message, appointment.customer_number)
     message_response = recieve_placeholder()
     if message_response == 'Y':
+        c.execute('''
+                    UPDATE appointments 
+                    SET appt_status = 2
+                    WHERE id = ?
+                ''', (appointment_id,))
+        conn.commit()
+        conn.close()
         thanks_message = 'Thank you for confirming your appointment with us'
         send_placeholder(thanks_message, messages[1])
         return redirect(url_for('appointments.view_appointments'))
