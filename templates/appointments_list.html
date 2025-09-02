@@ -29,7 +29,10 @@
                 <td>{{ appointment['appt_datetime'] }}</td>
                 <td>{{ appointment['phone_no'] }}</td>
                 <td>{{ appointment['comments'] }}</td>
-                <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Cancelled' }}</td>
+                <td>{% set status_map = {1: 'Scheduled', 2: 'Done', 0: 'Cancelled'} %}
+                {{ status_map[appointment['appt_status']] }}</td>
+                <!-- {{ 'Scheduled' if appointment['appt_status'] == 1 else 'Done' if appointment['appt_status'] == 2 else 'Cancelled' }} -->
+
                 <td>
                     {% if appointment['appt_status'] == 1 %}
                     <a href="{{ url_for('cancel_appointment', appointment_id=appointment[0]) }}">Cancel</a>
