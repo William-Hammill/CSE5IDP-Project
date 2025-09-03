@@ -41,8 +41,7 @@ def init_db():
                 customer_first TEXT,
                 customer_last TEXT,
                 customer_number INTEGER,
-                appt_time TEXT,
-                appt_date TEXT,
+                appt_datetime TEXT,
                 pet_name TEXT,
                 comments TEXT,
                 appt_status INTEGER DEFAULT 1

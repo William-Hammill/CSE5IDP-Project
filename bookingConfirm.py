@@ -15,7 +15,12 @@ def load_page():
 def view_appointments():  # SQLITE version from simple_form branch
     conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
+    current_time = datetime.now()
     c = conn.cursor()
+    c.execute(''' 
+            UPDATE appointments SET appt_status = 2 -- 2 = Done
+            WHERE appt_datetime < ? AND appt_status = 1 OR appt_status = 3
+        ''', (current_time,))
     c.execute('SELECT * FROM appointments')
     booked_appointments = c.fetchall()
     conn.close()
@@ -38,20 +43,20 @@ def create_appointment():
     date_notice = timedelta(days=1)  # code to determine date for sending reminder/confirmation messages
     reminder_date = appointment_date - date_notice  # sets reminder send-date to day before appointment booking
     send_date = datetime.strftime(reminder_date, '%Y-%m-%d')
-    #appt_datetime = datetime.strptime(f"{appt_date} {appointment_time}", "%Y-%m-%d %H:%M")
+    appt_datetime = datetime.strptime(f"{appt_date} {appointment_time}", "%Y-%m-%d %H:%M")
     # Check for existing appointments
     # conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
-    c.execute('SELECT * FROM appointments WHERE appt_date = ? AND appt_time = ?', (appt_date, appointment_time,))
+    c.execute('SELECT * FROM appointments WHERE appt_datetime = ?', (appt_datetime,))
     existing_appointments = c.fetchall()
     # conn.close()
     if existing_appointments:
         return "This appointment time is already booked. Please select another time." + render_template('AppointmentViewer.html'), 400
     c.execute('''
-                           INSERT INTO appointments (customer_first, customer_last, appt_time, appt_date, pet_name, comments, appt_status)
-                           VALUES (?, ?, ?, ?, ?, ?, ?)
+                           INSERT INTO appointments (customer_first, customer_last, appt_datetime, pet_name, comments, appt_status)
+                           VALUES (?, ?, ?, ?, ?, ?)
                        ''', (
-        customer_first_name, customer_last_name, appointment_time, appt_date, pets_name, comments,
+        customer_first_name, customer_last_name, appt_datetime, pets_name, comments,
         appointment_status))
     print('Successfully added appointment')
     c.execute('SELECT id from appointments ORDER BY id DESC')
@@ -88,7 +93,7 @@ def confirm_appointment(appointment_id):
     if message_response == 'Y':
         c.execute('''
                     UPDATE appointments 
-                    SET appt_status = 2
+                    SET appt_status = 3
                     WHERE id = ?
                 ''', (appointment_id,))
         conn.commit()

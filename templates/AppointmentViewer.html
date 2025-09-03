@@ -36,9 +36,9 @@
                 <td>{{ appointment['appt_time'] }}</td>
                 <td>{{ appointment['customer_number'] }}</td>
                 <td>{{ appointment['comments'] }}</td>
-                <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Confirmed' if appointment['appt_status'] == 2 else 'Cancelled' }}</td>
+                <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Done' if appointment['appt_status'] == 2 else 'Confirmed' if appointment['appt_status'] == 3 else 'Cancelled' }}</td>
                 <td>
-                    {% if (appointment['appt_status'] == 1 or appointment['appt_status'] == 2) %}
+                    {% if appointment['appt_status'] == 1 %}
                     <a href="{{ url_for('appointments.cancel_appointment', appointment_id=appointment[0]) }}">Cancel</a>
                     {% else %}
                     <span></span>
