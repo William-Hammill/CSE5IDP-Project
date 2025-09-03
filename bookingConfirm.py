@@ -53,10 +53,10 @@ def create_appointment():
     if existing_appointments:
         return "This appointment time is already booked. Please select another time." + render_template('AppointmentViewer.html'), 400
     c.execute('''
-                           INSERT INTO appointments (customer_first, customer_last, appt_datetime, pet_name, comments, appt_status)
+                           INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, comments, appt_status)
                            VALUES (?, ?, ?, ?, ?, ?)
                        ''', (
-        customer_first_name, customer_last_name, appt_datetime, pets_name, comments,
+        customer_first_name, customer_last_name, customer_number, appt_datetime, pets_name, comments,
         appointment_status))
     print('Successfully added appointment')
     c.execute('SELECT id from appointments ORDER BY id DESC')
@@ -88,7 +88,7 @@ def confirm_appointment(appointment_id):
     messages = c.fetchone()
     message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule please ring {contact_num} '
     send_placeholder(message, messages[1])
-    # send_message(message, appointment.customer_number)
+    # send_message(message, messages[1])
     message_response = recieve_placeholder()
     if message_response == 'Y':
         c.execute('''

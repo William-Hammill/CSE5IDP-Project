@@ -10,7 +10,7 @@ def send_message(contents, number):
     message_client = Client(account_sid, acc_token)
     confirm_message = message_client.messages.create(body=contents,
                                                      from_='+12674294612',  # twilio number
-                                                     to=number),
+                                                     to=number)
     return confirm_message.sid
 
 

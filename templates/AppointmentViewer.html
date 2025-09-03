@@ -32,8 +32,7 @@
                 <td>{{ appointment['id'] }}</td>
                 <td>{{ appointment['customer_first'] }} {{ appointment['customer_last'] }}</td>
                 <td>{{ appointment['pet_name'] }}</td>
-                <td>{{ appointment['appt_date'] }}</td>
-                <td>{{ appointment['appt_time'] }}</td>
+                <td>{{ appointment['appt_datetime'] }}</td>
                 <td>{{ appointment['customer_number'] }}</td>
                 <td>{{ appointment['comments'] }}</td>
                 <td>{{ 'Scheduled' if appointment['appt_status'] == 1 else 'Done' if appointment['appt_status'] == 2 else 'Confirmed' if appointment['appt_status'] == 3 else 'Cancelled' }}</td>
