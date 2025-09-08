@@ -11,7 +11,10 @@ def send_message(contents, number):
     confirm_message = message_client.messages.create(body=contents,
                                                      from_='+12674294612',  # twilio number
                                                      to=number)
-    return confirm_message.sid
+
+    response = MessagingResponse
+    return str(response)
+   #return confirm_message.sid
 
 
 # @app.route("/sms", methods=['GET', 'POST'])

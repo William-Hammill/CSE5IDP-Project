@@ -17,9 +17,13 @@ def view_appointments():  # SQLITE version from simple_form branch
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
     current_time = datetime.now()
     c = conn.cursor()
+   # c.execute('''
+   #         UPDATE appointments SET appt_status = 2 -- 2 = Done
+   #         WHERE appt_datetime < ? AND appt_status = 1 OR appt_datetime < ? AND appt_status = 3
+   #     ''', (current_time))
     c.execute(''' 
             UPDATE appointments SET appt_status = 2 -- 2 = Done
-            WHERE appt_datetime < ? AND appt_status = 1 OR appt_datetime < ? AND appt_status = 3
+            WHERE appt_datetime < ? AND appt_status = 1
         ''', (current_time,))
     c.execute('SELECT * FROM appointments')
     booked_appointments = c.fetchall()
@@ -54,7 +58,7 @@ def create_appointment():
         return "This appointment time is already booked. Please select another time." + render_template('AppointmentViewer.html'), 400
     c.execute('''
                            INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, comments, appt_status)
-                           VALUES (?, ?, ?, ?, ?, ?)
+                           VALUES (?, ?, ?, ?, ?, ?, ?)
                        ''', (
         customer_first_name, customer_last_name, customer_number, appt_datetime, pets_name, comments,
         appointment_status))
