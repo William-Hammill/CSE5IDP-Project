@@ -92,7 +92,7 @@ def confirm_appointment(appointment_id):
     messages = c.fetchone()
     message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule please ring {contact_num} '
     send_placeholder(message, messages[1])
-    # send_message(message, messages[1])
+    # message_response = send_message(message, messages[1])
     message_response = recieve_placeholder()
     if message_response == 'Y':
         c.execute('''
@@ -108,17 +108,6 @@ def confirm_appointment(appointment_id):
     elif message_response == 'N' or message_response is None:
         cancel_appointment(appointment_id)
         return redirect(url_for('appointments.view_appointments'))
-
-
-# if current_time == '09:00':  # & current_date == messages.reminder_date:
-
-# c.execute('''
-#             UPDATE appointments
-#             SET appt_status = 0
-#             WHERE id = ?
-#         ''', (appointment_id,))
-# conn.commit()
-# conn.close()
 
 
 # def allocate_employee(appointment_id, employee_id):
