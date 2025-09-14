@@ -47,7 +47,8 @@ def submit_appointment():
         # Check for existing appointments
         conn = sqlite3.connect('appointments.db')
         c = conn.cursor()
-        c.execute('SELECT * FROM appointments WHERE appt_datetime = ?', (appt_datetime,))
+        # Checks: appt_datetime + appt_status 1 (Scheduled). If these are both taken/true, then deny appointments for this time. 
+        c.execute('SELECT * FROM appointments WHERE appt_datetime = ? AND appt_status = 1', (appt_datetime,))
         existing_appointments = c.fetchall()
         conn.close()
         if existing_appointments:
