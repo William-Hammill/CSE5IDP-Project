@@ -29,7 +29,7 @@ def receive_message():
 
     #print(message.body)
     response = MessagingResponse()
-    contents = message.body
+    contents = request.form['body']
    # response.message()
     return contents
     #return str(response.message())

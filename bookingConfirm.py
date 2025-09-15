@@ -145,8 +145,8 @@ def cancel_appointment(appointment_id):
     return redirect(url_for('appointments.view_appointments'))
 
 
-@appointments.route('/recieve_message')
+@appointments.route('/recieve_message', methods=['GET'])
 def receive_message():
-    response = MessagingResponse()
-    # response.message()
-    return str(response.message())
+    contents = request.form['body']
+    return contents
+   # return str(response.message())
