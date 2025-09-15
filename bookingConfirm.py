@@ -53,7 +53,7 @@ def create_appointment():
     # Check for existing appointments
     # conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
-    c.execute('SELECT * FROM appointments WHERE appt_datetime = ?', (appt_datetime,))
+    c.execute('SELECT * FROM appointments WHERE appt_datetime = ? AND appt_status = 1', (appt_datetime,))
     existing_appointments = c.fetchall()
     # conn.close()
     if existing_appointments:
@@ -95,13 +95,12 @@ def confirm_appointment(appointment_id):
               (current_date, appointment_id))
     messages = c.fetchone()
     message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule please ring {contact_num} '
-    #send_placeholder(message, messages[1])
-    print(messages[1])
-    send_message(message, messages[1])
-    print(url_for(appointments.receive_message))
+    send_placeholder(message, messages[1])
+    #print(messages[1])
+    #send_message(message, messages[1])
     #message_response = send_message(message, messages[1])
-    # message_response = recieve_placeholder()
-    message_response = receive_message()
+    message_response = recieve_placeholder()
+    #message_response = receive_message()
     if message_response == 'Y':
         c.execute('''
                     UPDATE appointments 
@@ -111,12 +110,12 @@ def confirm_appointment(appointment_id):
         conn.commit()
         conn.close()
         thanks_message = 'Thank you for confirming your appointment with us'
-        send_message(thanks_message, messages[1])
-        #send_placeholder(thanks_message, messages[1])
-        return render_template('BookingLayout.html')
+        #send_message(thanks_message, messages[1])
+        send_placeholder(thanks_message, messages[1])
+        return redirect(url_for('appointments.view_appointments'))
     elif message_response == 'N' or message_response is None:
         cancel_appointment(appointment_id)
-        return render_template('BookingLayout.html')
+        return redirect(url_for('appointments.view_appointments'))
 
 
 # def allocate_employee(appointment_id, employee_id):
