@@ -97,10 +97,10 @@ def confirm_appointment(appointment_id):
     messages = c.fetchone()
     message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule, please ring {contact_num} '
     send_placeholder(message, messages[1])
-    #print(messages[1])
+    # print(messages[1])
     send_message(message, messages[1])
-    #message_response = send_message(message, messages[1])
-    #message_response = recieve_placeholder()
+    # message_response = send_message(message, messages[1])
+    # message_response = recieve_placeholder()
     message_response = receive_message(messages[1])
     if message_response == 'Y':
         c.execute('''
@@ -111,7 +111,7 @@ def confirm_appointment(appointment_id):
         conn.commit()
         conn.close()
         thanks_message = 'Thank you for confirming your appointment with us'
-        #send_message(thanks_message, messages[1])
+        # send_message(thanks_message, messages[1])
         send_placeholder(thanks_message, messages[1])
         return redirect(url_for('appointments.view_appointments'))
     elif message_response == 'N' or message_response is None:
@@ -141,12 +141,20 @@ def cancel_appointment(appointment_id):
         ''', (appointment_id,))
     conn.commit()
     conn.close()
-    #return render_template('BookingLayout.html')
+    # return render_template('BookingLayout.html')
     return redirect(url_for('appointments.view_appointments'))
 
 
 @appointments.route('/sms', methods=['GET', 'POST'])
-def receive_message():
-    contents = request.values.get['Body', None]
-    return contents
-   # return str(response.message())
+def receive_message(client_num):
+    account_sid = ''
+    acc_token = ''
+    message_client = Client(account_sid, acc_token)
+
+    received_messages = message_client.messages.list(from_=client_num, to='+12674294612')
+
+    for contents in received_messages:
+        return contents.body
+    # contents = request.values.get['Body', None]
+    # return contents
+# return str(response.message())
