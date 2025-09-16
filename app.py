@@ -29,7 +29,7 @@ init_db()
 # Route to show the form
 @app.route('/')
 def home():
-    return render_template('appointment_form.html')
+    return render_template('appointment_form.html', form_data={}, error=None)
 
 # Route to handle form submission
 @app.route('/submit', methods=['POST'])
@@ -52,7 +52,8 @@ def submit_appointment():
         existing_appointments = c.fetchall()
         conn.close()
         if existing_appointments:
-            return "This appointment time is already booked. Please select another time." + render_template('appointment_form.html'), 400
+            error = "This appointment time is already booked. Please select another time."
+            return render_template('appointment_form.html', error=error, form_data=request.form), 400
         # Insert data into SQLite
         conn = sqlite3.connect('appointments.db')
         c = conn.cursor()
