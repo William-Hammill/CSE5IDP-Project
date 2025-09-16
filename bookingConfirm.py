@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for
 from datetime import datetime, timedelta
 from Messaging import send_message, send_placeholder, recieve_placeholder
 import sqlite3
+from twilio.rest import Client
 from twilio import twiml
 from twilio.twiml.messaging_response import MessagingResponse
 
@@ -94,13 +95,13 @@ def confirm_appointment(appointment_id):
                 appt_time FROM reminders WHERE reminder_date = ? AND appointment_id = ?''',
               (current_date, appointment_id))
     messages = c.fetchone()
-    message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule please ring {contact_num} '
+    message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule, please ring {contact_num} '
     send_placeholder(message, messages[1])
     #print(messages[1])
-    #send_message(message, messages[1])
+    send_message(message, messages[1])
     #message_response = send_message(message, messages[1])
-    message_response = recieve_placeholder()
-    #message_response = receive_message()
+    #message_response = recieve_placeholder()
+    message_response = receive_message(messages[1])
     if message_response == 'Y':
         c.execute('''
                     UPDATE appointments 
@@ -144,8 +145,8 @@ def cancel_appointment(appointment_id):
     return redirect(url_for('appointments.view_appointments'))
 
 
-@appointments.route('/recieve_message', methods=['GET'])
+@appointments.route('/sms', methods=['GET', 'POST'])
 def receive_message():
-    contents = request.form['body']
+    contents = request.values.get['Body', None]
     return contents
    # return str(response.message())
