@@ -4,9 +4,6 @@ from bookingConfirm import appointments
 import sqlite3
 
 booking_application = Flask(__name__)
-
-
-# basedir = os.path.abspath(os.path.dirname(__file__))
 @booking_application.route('/')
 def home():
     conn = sqlite3.connect('appointments.db')

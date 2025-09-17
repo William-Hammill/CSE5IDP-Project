@@ -4,8 +4,6 @@ from Messaging import send_message #, send_placeholder, recieve_placeholder
 import sqlite3
 from twilio.rest import Client
 from time import sleep
-from twilio import twiml
-from twilio.twiml.messaging_response import MessagingResponse
 
 appointments = Blueprint('appointments', __name__)
 
