@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from Messaging import send_message, send_placeholder, recieve_placeholder
 import sqlite3
 from twilio.rest import Client
+from time import sleep
 from twilio import twiml
 from twilio.twiml.messaging_response import MessagingResponse
 
@@ -96,13 +97,14 @@ def confirm_appointment(appointment_id):
               (current_date, appointment_id))
     messages = c.fetchone()
     message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule, please ring {contact_num} '
-    send_placeholder(message, messages[1])
+    #send_placeholder(message, messages[1])
     # print(messages[1])
     send_message(message, messages[1])
     # message_response = send_message(message, messages[1])
     # message_response = recieve_placeholder()
+    sleep(15)
     message_response = receive_message(messages[1])
-    if message_response == 'Y':
+    if message_response == 'Y' or message_response is None:
         c.execute('''
                     UPDATE appointments 
                     SET appt_status = 3
@@ -111,10 +113,10 @@ def confirm_appointment(appointment_id):
         conn.commit()
         conn.close()
         thanks_message = 'Thank you for confirming your appointment with us'
-        # send_message(thanks_message, messages[1])
-        send_placeholder(thanks_message, messages[1])
+        send_message(thanks_message, messages[1])
+        #send_placeholder(thanks_message, messages[1])
         return redirect(url_for('appointments.view_appointments'))
-    elif message_response == 'N' or message_response is None:
+    elif message_response == 'N':
         cancel_appointment(appointment_id)
         return redirect(url_for('appointments.view_appointments'))
 
@@ -151,10 +153,13 @@ def receive_message(client_num):
     acc_token = ''
     message_client = Client(account_sid, acc_token)
 
-    received_messages = message_client.messages.list(from_=client_num, to='+12674294612')
+    received_messages = message_client.messages.list(from_=client_num, to='+12674294612', limit=1)
 
-    for contents in received_messages:
-        return contents.body
+    message = received_messages[0]
+    return message.body
+
+    #for contents in received_messages:
+        #return contents.body
     # contents = request.values.get['Body', None]
     # return contents
 # return str(response.message())
