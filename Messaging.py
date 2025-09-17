@@ -1,7 +1,6 @@
 from flask import request
 import os
 from twilio.rest import Client
-# from flask import request, app
 from twilio.twiml.messaging_response import MessagingResponse
 
 
@@ -35,16 +34,16 @@ def receive_message():
     #return str(response.message())
 
 
-def send_placeholder(contents, number):
+#def send_placeholder(contents, number):
    # account_sid = ''
     #acc_token = ''
     #message_client = Client(account_sid, acc_token)
     #confirm_message = message_client.messages.create(body=contents,
      #                                                from_='+12674294612',  # twilio number
      #                                                to=number),
-   print(contents)
-   return "message has been sent"
+ #  print(contents)
+ #  return "message has been sent"
 
 
-def recieve_placeholder():
-    return 'Y'
+#def recieve_placeholder():
+#    return 'Y'

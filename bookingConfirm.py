@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from datetime import datetime, timedelta
-from Messaging import send_message, send_placeholder, recieve_placeholder
+from Messaging import send_message #, send_placeholder, recieve_placeholder
 import sqlite3
 from twilio.rest import Client
 from time import sleep
@@ -90,7 +90,6 @@ def confirm_appointment(appointment_id):
     c = conn.cursor()
     contact_num = '(03) 5442 8880'
     current_timedate = datetime.now()
-    # current_time = current_timedate.time()
     current_date = current_timedate.date()
     c.execute('''SELECT customer_first, customer_number, pet_name, appt_date, 
                 appt_time FROM reminders WHERE reminder_date = ? AND appointment_id = ?''',
