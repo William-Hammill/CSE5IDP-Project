@@ -157,9 +157,3 @@ def receive_message(client_num):
 
     message = received_messages[0]
     return message.body
-
-    #for contents in received_messages:
-        #return contents.body
-    # contents = request.values.get['Body', None]
-    # return contents
-# return str(response.message())
