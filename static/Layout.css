@@ -1,0 +1,16 @@
+:root {
+    --background-color: #ffffff;
+    /* Light background */
+    --text-color: #333;
+    /* Light text */
+    --header-bg-color: rgba(76, 175, 80, 0.9);
+    /* Light header */
+    --footer-bg-color: rgba(241, 241, 241, 0.9);
+    /* Light footer */
+    --button-bg-color: #76c7c0;
+    /* Button */
+    --button-hover-bg-color: #64b5af;
+    /* Button hover */
+    --link-color: #00796b;
+    /* Link color */
+}
