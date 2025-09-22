@@ -1,0 +1,27 @@
+header.main-header {
+  /* height: 98vh; */
+}
+
+nav.nav-bar {
+  background-color: tomato;
+  display: flex;
+  align-items:center;
+  height: 3em;
+}
+
+ul.container {
+  display: flex;
+  align-items: center;
+  justify-content:space-around;
+  flex: auto;
+  padding: 0;
+}
+
+ul.container li {
+  list-style-type: none;
+  margin:0 2%;
+}
+
+img {
+  max-height: 100%;
+}
