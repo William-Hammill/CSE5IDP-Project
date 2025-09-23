@@ -1,28 +1,9 @@
 :root {
-    --background-color: #0fb7bd;
-    /* Light background */
-    --text-color: #333;
-    /* Light text */
-    --header-bg-color: rgba(9, 204, 135, 0.9);
-    /* Light header */
-    --footer-bg-color: rgba(241, 241, 241, 0.9);
-    /* Light footer */
     --button-bg-color: #76c7c0;
-    /* Light button */
     --button-hover-bg-color: #64b5af;
-    /* Light button hover */
     --link-color: #00796b;
-    /* Link color */
 }
 
-main {
-    min-height: 95vh;
-    position: relative;
-}
-
-input[type=text] {
-    color: var(--text-color)
-}
 button[type="submit"] {
     padding: 10px;
     background-color: var(--button-bg-color);
@@ -32,66 +13,31 @@ button[type="submit"] {
     cursor: pointer;
     transition: background-color 0.3s;
 }
-
 button[type="submit"]:hover {
     background-color: var(--button-hover-bg-color);
 }
-
-/* Appointment Table Styles */
-table {
-    width: 85%;
-    border-collapse: collapse;
-    margin: 0 auto;
-    margin-top: 2rem;
-}
-nav {
-    padding: 0 20px;
-}
-.nav-wrapper-bar {
-    --background: #0fb7bd;
-}
-.nav-wrapper .brand-logo {
-    display: flex;
-    align-items: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow: hidden;
-}
-.nav-wrapper .brand-logo h1 {
-    font-size: 1.5rem;
-    margin-right: 20px;
-    color: white;
-}
-.nav-wrapper .brand-logo .img-box img {
-    width: 100%;
-    height: auto;
-}
-.logo-container {
-    display: flex;
-    align-items: center;
-    margin: 20px;
-    /* Space around the logo */
+nav.nav-bar {
+  background-color: rgba(9, 204, 135, 0.9);
+  display: flex;
+  align-items:center;
+  height: auto;  /* 3em */
 }
 
-.logo-container img {
-    width: 50px;
-    /* Adjust the logo size */
-    height: auto;
-    /* Maintain aspect ratio */
-    border-radius: 50%;
-    /* Round the logo */
-    margin-right: 15px;
-    /* Space between logo and text */
+ul.container {
+  display: flex;
+  align-items: center;
+  justify-content:space-around;
+  flex: auto;
+  padding: 0;
 }
 
-.logo-container h1 {
-    font-size: 1.8rem;
-    /* Adjust heading size */
-    margin: 0;
-    /* Remove default margin */
-    color: var(--text-color);
-    /* Use variable for text color */
+ul.container li {
+  list-style-type: none;
+  margin:0 2%;
+}
+
+img {
+  max-height: 100%;
 }
 
 

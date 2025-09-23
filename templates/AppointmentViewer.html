@@ -9,29 +9,17 @@
     <title>K9 Deli pet grooming appointments</title>
 </head>
 <body>
-<header>
-    <nav class="nav-extended">
-            <div class="nav-wrapper">
-                <a href="/" class="brand-logo">
-                    <div class="logo-container">
-                        <h>K9 Deli Appointment Booking System</h>
-                        <div class="img-box">
-                            <!-- Flask needs images to be under /static/ by default -->
-                            <img src="./static/k9-Logo.jpg" alt="K9 Logo" class="logo-image">
-                        </div>
-                    </div>
-                </a>
-                <ul class="right hide-on-med-and-down">
-                    <li>
-                        <a href="{{ url_for('appointments.load_page') }}">Book appointment</a>
-                    </li>
-                    <li>
-                        <a href="{{ url_for('appointments.view_appointments') }}">View appointments</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
+<header class="main-header">
+    <nav class="nav-bar">
+        <!-- Flask needs images to be under /static/ by default -->
+        <img src="./static/k9_logo.jpg" alt="K9 Logo">
+      <ul class="container">
+        <li><a href="{{ url_for('appointments.view_appointments') }}">View appointments</a></li>
+      </ul>
+      <ul class="container">
+        <li><a href="{{ url_for('appointments.load_page') }}">Book appointment</a></li>
+      </ul>
+    </nav>
 </header>
  <h4>Appointments List:</h4>
 <table border="1">
