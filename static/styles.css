@@ -1,12 +1,13 @@
 header.main-header {
   /* height: 98vh; */
+  /* delete this code block later if it is still not needed */
 }
 
 nav.nav-bar {
-  background-color: tomato;
+  background-color: rgba(9, 204, 135, 0.9);
   display: flex;
   align-items:center;
-  height: 3em;
+  height: auto;  /* 3em */
 }
 
 ul.container {

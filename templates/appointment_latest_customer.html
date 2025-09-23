@@ -2,13 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./static/styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointment Made!</title>
 </head>
 <body>
-    <header>
+    <header class="main-header">
+    <nav class="nav-bar">
         <!-- Flask needs images to be under /static/ by default -->
         <img src="./static/k9_logo.jpg" alt="K9 Logo" style="width:80px; height: auto;">
+      <ul class="container">
+        <li>All Appointments</li>
+      </ul>
+      <ul class="container">
+        <li>About Us</li>
+      </ul>
+    </nav>
     </header>
     <h1>Appointments List</h1>
     <table border="1">
