@@ -55,19 +55,23 @@ def create_appointment():
     # conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
     c.execute('SELECT * FROM appointments WHERE appt_datetime = ? AND appt_status = 1', (appt_datetime,))
+
     c.execute('SELECT session_limit FROM Sessions WHERE appt_datetime = ?', (appt_datetime,))
     existing_appointments = c.fetchall()
     session_limit = c.fetchone()
     # conn.close()
     if session_limit == 8:
-        return "This appointment time is already booked. Please select another time." + render_template(
+        return "This Session time is fully booked. Please select another time." + render_template(
             'AppointmentViewer.html'), 400
-    c.execute('''
-                           INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, comments, appt_status)
-                           VALUES (?, ?, ?, ?, ?, ?, ?)
-                       ''', (
-        customer_first_name, customer_last_name, customer_number, appt_datetime, pets_name, comments,
-        appointment_status))
+
+    elif session_limit is None:
+        session_limit = 0
+        c.execute('''INSERT INTO Sessions (appt_datetime, session_limit) VALUES (?'?)''', (appt_datetime, session_limit))
+
+    c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
+    comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
+                                                              customer_number, appt_datetime, pets_name, comments,
+                                                              appointment_status))
     session_number += 1
     c.execute('''UPDATE Sessions SET session_limit = ? WHERE appt_datetime = ? ''', (session_number, appt_datetime ))
     print('Successfully added appointment')
