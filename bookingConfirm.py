@@ -46,7 +46,7 @@ def create_appointment():
     customer_last_name = request.form['customer_last']
     comments = request.form['comments']
     appointment_status = 1  # 1 = scheduled, 0 = canceled, 2 = confirmed
-    date_notice = timedelta(days=1)  # code to determine date for sending reminder/confirmation messages
+    date_notice = timedelta(days=2)  # code to determine date for sending reminder/confirmation messages
     reminder_date = appointment_date - date_notice  # sets reminder send-date to day before appointment booking
     send_date = datetime.strftime(reminder_date, '%Y-%m-%d')
     appt_datetime = datetime.strptime(f"{appt_date} {appointment_time}", "%Y-%m-%d %H:%M")
