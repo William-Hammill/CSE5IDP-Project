@@ -58,6 +58,13 @@ def init_db():
                     FOREIGN KEY(appointment_id) REFERENCES appointments(id)
                 )
             ''')
+    c.execute('''
+                    CREATE TABLE IF NOT EXISTS Sessions (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        appt_datetime TEXT,
+                        session_limit INTEGER
+                    )
+                ''')
     conn.commit()
     conn.close()
 

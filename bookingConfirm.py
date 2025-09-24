@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from datetime import datetime, timedelta
-from Messaging import send_message #, send_placeholder, recieve_placeholder
+from Messaging import send_message  # , send_placeholder, recieve_placeholder
 import sqlite3
 from twilio.rest import Client
 from time import sleep
@@ -50,13 +50,16 @@ def create_appointment():
     reminder_date = appointment_date - date_notice  # sets reminder send-date to day before appointment booking
     send_date = datetime.strftime(reminder_date, '%Y-%m-%d')
     appt_datetime = datetime.strptime(f"{appt_date} {appointment_time}", "%Y-%m-%d %H:%M")
+    session_number = 0
     # Check for existing appointments
     # conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
     c.execute('SELECT * FROM appointments WHERE appt_datetime = ? AND appt_status = 1', (appt_datetime,))
+    c.execute('SELECT session_limit FROM Sessions WHERE appt_datetime = ?', (appt_datetime,))
     existing_appointments = c.fetchall()
+    session_limit = c.fetchone()
     # conn.close()
-    if existing_appointments:
+    if session_limit == 8:
         return "This appointment time is already booked. Please select another time." + render_template(
             'AppointmentViewer.html'), 400
     c.execute('''
@@ -65,6 +68,8 @@ def create_appointment():
                        ''', (
         customer_first_name, customer_last_name, customer_number, appt_datetime, pets_name, comments,
         appointment_status))
+    session_number += 1
+    c.execute('''UPDATE Sessions SET session_limit = ? WHERE appt_datetime = ? ''', (session_number, appt_datetime ))
     print('Successfully added appointment')
     print(customer_number)
     c.execute('SELECT id from appointments ORDER BY id DESC')
@@ -94,7 +99,7 @@ def confirm_appointment(appointment_id):
               (current_date, appointment_id))
     messages = c.fetchone()
     message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule, please ring {contact_num} '
-    #send_placeholder(message, messages[1])
+    # send_placeholder(message, messages[1])
     # print(messages[1])
     send_message(message, messages[1])
     # message_response = send_message(message, messages[1])
@@ -111,7 +116,7 @@ def confirm_appointment(appointment_id):
         conn.close()
         thanks_message = 'Thank you for confirming your appointment with us'
         send_message(thanks_message, messages[1])
-        #send_placeholder(thanks_message, messages[1])
+        # send_placeholder(thanks_message, messages[1])
         return redirect(url_for('appointments.view_appointments'))
     elif message_response == 'N':
         cancel_appointment(appointment_id)
