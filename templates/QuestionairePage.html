@@ -5,9 +5,19 @@
     <title>K9 Deli Appointment Booking</title>
 </head>
 <body>
-<h1>Welcome to the K9 Deli appointment booking service</h1>
-<p>Is this your first time booking your pet with us?</p>
-<a href="{{ url_for('appointments.view_appointments') }}">Yes</a>
-<a href="{{ url_for('appointments.questionaire') }}">No</a>
+<h3>New Customer questionaire</h3>
+<p>Please answer the questions below. These will be used to determine if we can accept your dog</p>
+<div>
+    <form action="{{ url_for('appointments.questionaireAnswers') }}" method="POST">
+        <label for="answer_1">Has your dog been to any other grooming business?</label>
+        <input type="text" id="answer_1" name="answer_1" required><br><br>
+
+        <label for="answer_2">Does your dog have any behavioural issues? (temper, biting people etc)</label>
+        <input type="text" id="answer_2" name="answer_2" required><br><br>
+
+        <button type="submit" class="btn waves-effect waves-light">Submit</button>
+    </form>
+
+</div>
 </body>
 </html>

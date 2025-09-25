@@ -12,6 +12,16 @@ appointments = Blueprint('appointments', __name__)
 def load_page():
     return render_template('BookingLayout.html')
 
+@appointments.route('/appointments/questionaire')
+def load_questionaire():
+    return render_template('QuestionairePage.html')
+
+@appointments.route('/appointments/questionaireAnswers')
+def submit_questionaire():
+    answer_1 = request.form['answer_1']
+    answer_2 = request.form['answer_2']
+    answer_3 = request.form['answer_3']
+    return redirect(url_for('appointments.view_appointments'))
 
 @appointments.route('/appointments/view')
 def view_appointments():  # SQLITE version from simple_form branch
