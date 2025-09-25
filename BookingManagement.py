@@ -23,10 +23,12 @@ def home():
         appointment_reminder_id = int(reminder_messages[0])
         appointments.confirm_appointment(appointment_reminder_id)
         conn.close()
-        return render_template('AppointmentViewer.html', appointments=booked_appointments)
+        return render_template('WelcomePage.html')
+        #return render_template('AppointmentViewer.html', appointments=booked_appointments)
     else:
         conn.close()
-        return render_template('AppointmentViewer.html', appointments=booked_appointments)
+        return render_template('WelcomePage.html')
+        #return render_template('AppointmentViewer.html', appointments=booked_appointments)
 
 
 def init_db():
