@@ -11,14 +11,18 @@
 <h3>New Customer questionnaire</h3>
 <p>Please answer the questions below. These will be used to determine if we can accept your dog</p>
 <div>
-    <form action="{{ url_for('appointments.questionaireAnswers') }}" method="POST">
+    <form action="{{ url_for('appointments.submit_questionnaire') }}" method="POST">
         <label for="answer_1">Has your dog been to any other grooming business?</label>
         <input type="text" id="answer_1" name="answer_1" required><br><br>
 
-        <label for="answer_2">Does your dog have any behavioural issues? (temper, biting people etc)</label>
+        <label for="answer_2">Has your dog been groomed before?</label>
         <input type="text" id="answer_2" name="answer_2" required><br><br>
 
+        <label for="answer_3">Does your dog have any behavioural issues? (temper, biting people etc)</label>
+        <input type="text" id="answer_3" name="answer_3" required><br><br>
 
+        <label for="answer_4">Does your dog have any medical issues relevant to grooming (allergies etc.)</label>
+        <input type="text" id="answer_4" name="answer_4" required><br><br>
 
         <button type="submit" class="btn waves-effect waves-light">Submit</button>
     </form>

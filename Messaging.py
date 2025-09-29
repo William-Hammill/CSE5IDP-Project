@@ -19,18 +19,14 @@ def send_message(contents, number):
 
 
 # @app.route("/sms", methods=['GET', 'POST'])
-def receive_message():
-    account_sid = os.environ[""]
-    auth_token = os.environ[""]
-    client = Client(account_sid, auth_token)
+def receive_message(client_num):
+    account_sid = ''
+    acc_token = ''
+    message_client = Client(account_sid, acc_token)
+    received_messages = message_client.messages.list(from_=client_num, to='+12674294612', limit=1)
 
-    message = client.messages("MGdd3583909790c7d6adbf9e8a42d19f58").fetch()
-
-    #print(message.body)
-    response = MessagingResponse()
-    contents = request.form['body']
-   # response.message()
-    return contents
+    message = received_messages[0]
+    return message.body
     #return str(response.message())
 
 
