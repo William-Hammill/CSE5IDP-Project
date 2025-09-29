@@ -74,40 +74,34 @@ def create_appointment():
     appt_datetime = datetime.strptime(f"{appt_date} {appointment_time}", "%Y-%m-%d %H:%M")
     session_number = 0
     # Check to see if session exists or is full
-    # conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
-    # c.execute('SELECT * FROM appointments WHERE appt_datetime = ? AND appt_status = 1', (appt_datetime,))
-
     c.execute('SELECT session_limit FROM Sessions WHERE appt_datetime = ?', (appt_datetime,))
-    # existing_appointments = c.fetchall()
     session_limit = c.fetchone()
-    #print(session_limit)
-    limit = int(session_limit[0])
-    print(limit)
+    print(session_limit)
     # conn.close()
-    if limit == 4:
-        return "This Session is fully booked. Please select another time." + render_template(
-            'AppointmentViewer.html'), 400
-
-    elif session_limit is None:
+    if session_limit is None:
         session_limit = 0
         c.execute('''INSERT INTO Sessions (appt_datetime, session_limit) VALUES (?,?)''',
                   (str(appt_datetime), session_limit))
         print('Added session to database')
 
+    elif int(session_limit[0]) == 8:
+        return "This Session is fully booked. Please select another time." + render_template(
+            'AppointmentViewer.html'), 400
     c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
                                                               appointment_status))
-    session_number = session_limit + 1
+    limit = int(session_limit[0])
+    session_number = limit + 1
     print(session_number)
     c.execute('''UPDATE Sessions SET session_limit = ? WHERE appt_datetime = ? ''', (session_number, str(appt_datetime),))
     print('Successfully added appointment')
-    print(customer_number)
+   # print(customer_number)
     c.execute('SELECT id from appointments ORDER BY id DESC')
     appointment_id = c.fetchone()
     appointment_reminder_id = int(appointment_id[0])  # [int(_) for _ in appointment_id]
-    print(appointment_reminder_id)
+    #print(appointment_reminder_id)
     c.execute('''INSERT INTO reminders (customer_first, customer_last, customer_number, appt_time, 
                 appt_date, pet_name, reminder_date, appointment_id) VALUES (?,?,?,?,?,?,?,?)''',
               (customer_first_name, customer_last_name, customer_number, appointment_time, appt_date, pets_name,
