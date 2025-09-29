@@ -14,13 +14,16 @@ def load_page():
 
 @appointments.route('/appointments/questionaire')
 def load_questionaire():
-    return render_template('QuestionairePage.html')
+    return render_template('QuestionnairePage.html')
 
 @appointments.route('/appointments/questionaireAnswers')
 def submit_questionaire():
     answer_1 = request.form['answer_1']
     answer_2 = request.form['answer_2']
     answer_3 = request.form['answer_3']
+    conn = sqlite3.connect('appointments.db')
+    c = conn.cursor()
+    c.execute('''INSERT INTO Questionnaires (answer_1, answer_2, answer_3) VALUES (?, ?, ?)''', (answer_1, answer_2, answer_3))
     return redirect(url_for('appointments.view_appointments'))
 
 @appointments.route('/appointments/view')
@@ -76,7 +79,7 @@ def create_appointment():
 
     elif session_limit is None:
         session_limit = 0
-        c.execute('''INSERT INTO Sessions (appt_datetime, session_limit) VALUES (?'?)''', (appt_datetime, session_limit))
+        c.execute('''INSERT INTO Sessions (appt_datetime, session_limit) VALUES (?,?)''', (appt_datetime, session_limit))
 
     c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,

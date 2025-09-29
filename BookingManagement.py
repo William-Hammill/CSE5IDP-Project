@@ -67,6 +67,15 @@ def init_db():
                         session_limit INTEGER
                     )
                 ''')
+
+    c.execute('''
+                        CREATE TABLE IF NOT EXISTS Questionnaires (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            answer_1 TEXT,
+                            answer_2 TEXT,
+                            answer_3 TEXT,
+                        )
+                    ''')
     conn.commit()
     conn.close()
 
