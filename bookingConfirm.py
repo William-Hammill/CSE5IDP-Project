@@ -15,20 +15,22 @@ def load_page():
 
 @appointments.route('/appointments/questionnaire')
 def load_questionnaire():
-    return render_template('QuestionnairePage.html')
+    return "Thank you for answering, Unfortunately online bookings are for repeat customers only. To make an " \
+           "appointment please call us at (03) 5442 8880", 400
+    #return render_template('QuestionnairePage.html')
 
 
 @appointments.route('/appointments/questionaireAnswers', methods=['POST'])
 def submit_questionnaire():
-    answer_1 = request.form['answer_1']
-    answer_2 = request.form['answer_2']
-    answer_3 = request.form['answer_3']
-    answer_4 = request.form['answer_4']
-    conn = sqlite3.connect('appointments.db')
-    c = conn.cursor()
-    c.execute('''INSERT INTO Questionnaires (answer_1, answer_2, answer_3, answer_4) VALUES (?, ?, ?, ?)''',
-              (answer_1, answer_2, answer_3, answer_4))
-    return "Thank you for answering, Unfortunately online bookings are unavailable to first time customers. To make an " \
+    #answer_1 = request.form['answer_1']
+    #answer_2 = request.form['answer_2']
+    #answer_3 = request.form['answer_3']
+    #answer_4 = request.form['answer_4']
+    #conn = sqlite3.connect('appointments.db')
+    #c = conn.cursor()
+    #c.execute('''INSERT INTO Questionnaires (answer_1, answer_2, answer_3, answer_4) VALUES (?, ?, ?, ?)''',
+    #          (answer_1, answer_2, answer_3, answer_4))
+    return "Thank you for answering, Unfortunately online bookings are for repeat customers only. To make an " \
            "appointment please call us at (03) 5442 8880, we apologize for the inconvenience", 400
 
 
@@ -95,13 +97,14 @@ def create_appointment():
     limit = int(session_limit[0])
     session_number = limit + 1
     print(session_number)
-    c.execute('''UPDATE Sessions SET session_limit = ? WHERE appt_datetime = ? ''', (session_number, str(appt_datetime),))
+    c.execute('''UPDATE Sessions SET session_limit = ? WHERE appt_datetime = ? ''',
+              (session_number, str(appt_datetime),))
     print('Successfully added appointment')
-   # print(customer_number)
+    # print(customer_number)
     c.execute('SELECT id from appointments ORDER BY id DESC')
     appointment_id = c.fetchone()
     appointment_reminder_id = int(appointment_id[0])  # [int(_) for _ in appointment_id]
-    #print(appointment_reminder_id)
+    # print(appointment_reminder_id)
     c.execute('''INSERT INTO reminders (customer_first, customer_last, customer_number, appt_time, 
                 appt_date, pet_name, reminder_date, appointment_id) VALUES (?,?,?,?,?,?,?,?)''',
               (customer_first_name, customer_last_name, customer_number, appointment_time, appt_date, pets_name,
@@ -177,7 +180,7 @@ def cancel_appointment(appointment_id):
                 UPDATE Sessions 
                 SET session_limit = ?
                 WHERE appt_datetime = ?
-            ''', (new_limit,sessiondate,))
+            ''', (new_limit, sessiondate,))
     c.execute('''
             UPDATE appointments 
             SET appt_status = 0
