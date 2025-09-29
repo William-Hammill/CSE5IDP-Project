@@ -81,25 +81,27 @@ def create_appointment():
     c.execute('SELECT session_limit FROM Sessions WHERE appt_datetime = ?', (appt_datetime,))
     # existing_appointments = c.fetchall()
     session_limit = c.fetchone()
-    print(session_limit)
+    #print(session_limit)
+    limit = int(session_limit[0])
+    print(limit)
     # conn.close()
-    if session_limit == 4:
+    if limit == 4:
         return "This Session is fully booked. Please select another time." + render_template(
             'AppointmentViewer.html'), 400
 
     elif session_limit is None:
         session_limit = 0
         c.execute('''INSERT INTO Sessions (appt_datetime, session_limit) VALUES (?,?)''',
-                  (appt_datetime, session_limit))
+                  (str(appt_datetime), session_limit))
         print('Added session to database')
 
     c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
                                                               appointment_status))
-    session_number += 1
+    session_number = session_limit + 1
     print(session_number)
-    c.execute('''UPDATE Sessions SET session_limit = ? WHERE appt_datetime = ? ''', (session_number, appt_datetime))
+    c.execute('''UPDATE Sessions SET session_limit = ? WHERE appt_datetime = ? ''', (session_number, str(appt_datetime),))
     print('Successfully added appointment')
     print(customer_number)
     c.execute('SELECT id from appointments ORDER BY id DESC')
@@ -168,6 +170,20 @@ def confirm_appointment(appointment_id):
 def cancel_appointment(appointment_id):
     conn = sqlite3.connect('appointments.db')
     c = conn.cursor()
+    c.execute('SELECT appt_datetime FROM appointments WHERE id = ?', (appointment_id,))
+    date = c.fetchone()
+    sessiondate = str(date[0])
+    print(sessiondate)
+    c.execute('SELECT session_limit FROM Sessions WHERE appt_datetime = ?', (sessiondate,))
+    limit = c.fetchone()
+    print(limit)
+    session_number = int(limit[0])
+    new_limit = session_number - 1
+    c.execute('''
+                UPDATE Sessions 
+                SET session_limit = ?
+                WHERE appt_datetime = ?
+            ''', (new_limit,sessiondate,))
     c.execute('''
             UPDATE appointments 
             SET appt_status = 0
@@ -177,14 +193,3 @@ def cancel_appointment(appointment_id):
     conn.close()
     # return render_template('BookingLayout.html')
     return redirect(url_for('appointments.view_appointments'))
-
-# @appointments.route('/sms', methods=['GET', 'POST'])
-# def receive_message(client_num):
-#    account_sid = ''
-#    acc_token = ''
-#    message_client = Client(account_sid, acc_token)
-
-#    received_messages = message_client.messages.list(from_=client_num, to='+12674294612', limit=1)
-
-#    message = received_messages[0]
-#    return message.body

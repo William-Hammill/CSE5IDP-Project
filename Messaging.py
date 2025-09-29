@@ -1,7 +1,4 @@
-from flask import request
-import os
 from twilio.rest import Client
-from twilio.twiml.messaging_response import MessagingResponse
 
 
 # create twilio client/ message
