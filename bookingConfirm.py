@@ -16,7 +16,7 @@ def load_page():
 @appointments.route('/appointments/questionnaire')
 def load_questionnaire():
     return "Thank you for answering, Unfortunately online bookings are for repeat customers only. To make an " \
-           "appointment please call us at (03) 5442 8880", 400
+           "appointment please call us at (03) 5442 8880" + redirect(url_for('appointments.view_appointments')), 400
     #return render_template('QuestionnairePage.html')
 
 
@@ -88,8 +88,7 @@ def create_appointment():
         print('Added session to database')
 
     elif int(session_limit[0]) == 8:
-        return "This Session is fully booked. Please select another time." + render_template(
-            'AppointmentViewer.html'), 400
+        return "This Session is fully booked. Please select another time." + redirect(url_for('appointments.view_appointments')), 400
     c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
