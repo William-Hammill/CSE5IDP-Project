@@ -8,6 +8,18 @@
     <title>K9 deli appointment bookings</title>
 </head>
 <body>
+<header class="main-header">
+    <nav class="nav-bar">
+        <!-- Flask needs images to be under /static/ by default -->
+        <img src="./static/k9_logo.jpg" alt="K9 Logo" style="width:80px; height: auto;">
+      <ul class="container">
+        <li></li>
+      </ul>
+      <ul class="container">
+        <li></li>
+      </ul>
+    </nav>
+</header>
 <h1>Welcome to the K9 Deli appointment booking service</h1>
 <p>Is this your first time booking your pet with us?</p>
 <a href="{{ url_for('appointments.load_questionnaire') }}">Yes</a>
