@@ -1,8 +1,6 @@
 ## CSE5IDP appointment booking system
 
 Note: Python version must be 3.12(.11) or earlier in order to be compatible with the previous project's application, else it will not work.
-- admin admin
-- superUser superpass
 
 This is a flask based system to allow the employees of a pet grooming business to automate their booking system.
 
