@@ -16,11 +16,11 @@ def load_page():
 @appointments.route('/appointments/questionnaire')
 def load_questionnaire():
     return "Thank you for answering, Unfortunately online bookings are for repeat customers only. To make an " \
-           "appointment please call us at (03) 5442 8880" + redirect(url_for('appointments.view_appointments')), 400
+           "appointment please call us at (03) 5442 8880" + render_template('WelcomePage.html'), 400
     #return render_template('QuestionnairePage.html')
 
 
-@appointments.route('/appointments/questionaireAnswers', methods=['POST'])
+@appointments.route('/appointments/questionnaireAnswers', methods=['POST'])
 def submit_questionnaire():
     #answer_1 = request.form['answer_1']
     #answer_2 = request.form['answer_2']
@@ -93,7 +93,9 @@ def create_appointment():
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
                                                               appointment_status))
-    limit = int(session_limit[0])
+    c.execute('SELECT session_limit FROM Sessions WHERE appt_datetime = ?', (appt_datetime,))
+    new_limit = c.fetchone()
+    limit = int(new_limit[0])
     session_number = limit + 1
     print(session_number)
     c.execute('''UPDATE Sessions SET session_limit = ? WHERE appt_datetime = ? ''',
