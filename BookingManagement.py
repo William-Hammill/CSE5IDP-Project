@@ -18,7 +18,7 @@ def home():
     # return render_template('AppointmentViewer.html', appointments=booked_appointments)
     if current_time == '9:00':
         current_date = current_datetime.date()
-        c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''', current_date)
+        c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''', (current_date,))
         reminder_messages = c.fetchone()
         appointment_reminder_id = int(reminder_messages[0])
         appointments.confirm_appointment(appointment_reminder_id)
