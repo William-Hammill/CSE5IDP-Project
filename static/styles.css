@@ -4,6 +4,24 @@
     --link-color: #00796b;
 }
 
+body {
+  font-family: 'Calibri', sans-serif;
+}
+
+table, th, td {
+  border: 1px solid;
+  border-collapse: collapse;
+  padding: 10px;
+  margin: 0 auto;
+  text-align: center;
+  /* margin-top: 2rem; */
+}
+
+th {
+  background-color: #64b5af;
+  color: white;
+}
+
 button[type="submit"] {
     padding: 10px;
     background-color: var(--button-bg-color);
