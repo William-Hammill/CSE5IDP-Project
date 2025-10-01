@@ -88,7 +88,7 @@ def create_appointment():
         print('Added session to database')
 
     elif int(session_limit[0]) == 8:
-        return "This Session is fully booked. Please select another time." + redirect(url_for('appointments.view_appointments')), 400
+        return "This Session is fully booked. Please select another time." + render_template('BookingLayout.html'), 400
     c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
