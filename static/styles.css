@@ -17,6 +17,7 @@ label, input, select {
 
 body {
   font-family: 'Calibri', sans-serif;
+  text-align: center;
 }
 
 table, th, td {
@@ -24,7 +25,7 @@ table, th, td {
   border-collapse: collapse;
   padding: 10px;
   margin: 0 auto;
-  text-align: center;
+  /* text-align: center; */
   /* margin-top: 2rem; */
 }
 
