@@ -48,8 +48,8 @@ def view_appointments():  # SQLITE version from simple_form branch
     #     ''', (current_time))
     c.execute(''' 
             UPDATE appointments SET appt_status = 2 -- 2 = Done
-            WHERE appt_datetime < ? AND appt_status = 1
-        ''', (current_time,))
+            WHERE appt_datetime < ? AND appt_status = 1 OR appt_datetime < ? AND appt_status = 3
+        ''', (current_time, current_time))
     c.execute('SELECT * FROM appointments')
     booked_appointments = c.fetchall()
     conn.close()
