@@ -34,6 +34,7 @@ def submit_questionnaire():
     return "Thank you for answering, Unfortunately online bookings are for repeat customers only. To make an " \
            "appointment please call us at (03) 5442 8880, we apologize for the inconvenience", 400
 
+
 # Updates appointment list based on status and time of day
 @appointments.route('/appointments/view')
 def view_appointments():  # SQLITE version from simple_form branch
@@ -77,7 +78,7 @@ def create_appointment():
     c.execute('SELECT id FROM Sessions WHERE appt_datetime = ?', (appt_datetime,))
     session_id = c.fetchone()
     # print(session_id)
-    # Check to see if session exists or is full
+    # Check to see if session exists
     if session_id is None:
         session_limit = 0
         c.execute('''INSERT INTO Sessions (appt_datetime, session_limit) VALUES (?,?)''',
@@ -86,9 +87,13 @@ def create_appointment():
     # retrieves limit number from session
     c.execute('SELECT session_limit FROM Sessions WHERE appt_datetime = ?', (appt_datetime,))
     new_limit = c.fetchone()
+    current_time = datetime.now()
     # checks to see if session has any free slots
     if int(new_limit[0]) == 8:
         return "This Session is fully booked. Please select another time." + render_template('BookingLayout.html'), 400
+    # checks to see if selected time is before current time
+    if appt_datetime < current_time:
+        return "This timeslot is unavailable. Please select another time." + render_template('BookingLayout.html'), 400
     c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
