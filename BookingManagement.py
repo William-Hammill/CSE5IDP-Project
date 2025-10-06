@@ -70,27 +70,28 @@ def start_application():
     current_datetime = datetime.now()
     current_time = current_datetime.time()
     time = current_time.strftime('%H:%M')
-    if time == '9:00':
+    if time == '01:02':
         send_reminders()
     return booking_application
+
+
 def send_reminders():
     current_datetime = datetime.now()
     conn = sqlite3.connect('appointments.db')
     conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
     c = conn.cursor()
     current_date = current_datetime.date()
-    c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''',
-                  (current_date,))
+    c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''', (current_date,))
     reminder_messages = c.fetchone()
     if reminder_messages is None:
-        print( 'No appointments available')
+        print('No appointments available')
     appointment_reminder_id = int(reminder_messages[0])
-    c.execute('''SELECT status FROM appointments WHERE appointment_id = ?''',(appointment_reminder_id,))
+    c.execute('''SELECT appt_status FROM appointments WHERE id = ?''', (appointment_reminder_id,))
     status = c.fetchone()
-    if status == 1:
-        confirm_appointment(appointment_reminder_id)
-    conn.close()
+    #if status == 1:
+    confirm_appointment(appointment_reminder_id)
     print('reminders sent')
+    conn.close()
 
 
 if __name__ == '__main__':
