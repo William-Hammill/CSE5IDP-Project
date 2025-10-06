@@ -25,13 +25,16 @@
 <p>Please enter the details for your appointment below</p>
 <div>
     <form action="{{ url_for('appointments.create_appointment') }}" method="POST">
-        <label for="customer_first">First Name:</label>
+        <label for="customer_first">First Name:</label><br>
         <input type="text" id="customer_first" name="customer_first" required><br><br>
 
-        <label for="customer_last">Last Name:</label>
+        <label for="customer_last">Last Name:</label><br>
         <input type="text" id="customer_last" name="customer_last" required><br><br>
 
-        <label for="appt_time">Appointment Time:</label>
+        <label for="appt_date">Appointment Date:</label><br>
+        <input type="date" id="appt_date" name="appt_date" required><br><br>
+
+        <label for="appt_time">Appointment Time:</label><br>
         <select id="appt_time" name="appt_time" required>
             <!-- Note: Changed value from HH:MM:SS -> HH:MM to
              avoid submission handling error -->
@@ -41,17 +44,14 @@
                 <option value="12:00">12:00pm</option>
         </select><br><br>
 
-        <label for="appt_date">Appointment Date:</label>
-        <input type="date" id="appt_date" name="appt_date" required><br><br>
-
-        <label for="pet_name">Pet Name:</label>
+        <label for="pet_name">Pet Name:</label><br>
         <input type="text" id="pet_name" name="pet_name" required><br><br>
 
-        <label for="customer_number">Phone number:</label>
+        <label for="customer_number">Phone number:</label><br>
         <input type="text" id="customer_number" name="customer_number" required><br><br>
 
 
-        <label for="comments">Comments (if any):</label>
+        <label for="comments">Comments (if any):</label><br>
         <input type="text" id="comments" name="comments"><br><br>
 
         <button type="submit" class="btn waves-effect waves-light">Submit</button>
