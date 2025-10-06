@@ -1,34 +1,17 @@
 from flask import Flask, render_template
 from datetime import datetime
-from bookingConfirm import appointments
+from bookingConfirm import appointments, confirm_appointment
 import sqlite3
 
 booking_application = Flask(__name__)
+
+
 @booking_application.route('/')
 def home():
-    conn = sqlite3.connect('appointments.db')
-    conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
-    c = conn.cursor()
-    c.execute('SELECT * FROM appointments')
-    booked_appointments = c.fetchall()
     # conn.close()
-    current_datetime = datetime.now()
-    current_time = current_datetime.time()
 
     # return render_template('AppointmentViewer.html', appointments=booked_appointments)
-    if current_time == '9:00':
-        current_date = current_datetime.date()
-        c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''', (current_date,))
-        reminder_messages = c.fetchone()
-        appointment_reminder_id = int(reminder_messages[0])
-        appointments.confirm_appointment(appointment_reminder_id)
-        conn.close()
-        return render_template('WelcomePage.html')
-        #return render_template('AppointmentViewer.html', appointments=booked_appointments)
-    else:
-        conn.close()
-        return render_template('WelcomePage.html')
-        #return render_template('AppointmentViewer.html', appointments=booked_appointments)
+    return render_template('WelcomePage.html')
 
 
 def init_db():
@@ -84,7 +67,30 @@ def init_db():
 def start_application():
     booking_application.register_blueprint(appointments)
     init_db()  # initialize sqlite database
+    current_datetime = datetime.now()
+    current_time = current_datetime.time()
+    time = current_time.strftime('%H:%M')
+    if time == '9:00':
+        send_reminders()
     return booking_application
+def send_reminders():
+    current_datetime = datetime.now()
+    conn = sqlite3.connect('appointments.db')
+    conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
+    c = conn.cursor()
+    current_date = current_datetime.date()
+    c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''',
+                  (current_date,))
+    reminder_messages = c.fetchone()
+    if reminder_messages is None:
+        print( 'No appointments available')
+    appointment_reminder_id = int(reminder_messages[0])
+    c.execute('''SELECT status FROM appointments WHERE appointment_id = ?''',(appointment_reminder_id,))
+    status = c.fetchone()
+    if status == 1:
+        confirm_appointment(appointment_reminder_id)
+    conn.close()
+    print('reminders sent')
 
 
 if __name__ == '__main__':
