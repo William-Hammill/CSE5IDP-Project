@@ -55,7 +55,7 @@
                 </td>
                 <td>
                     {% if appointment['appt_status'] == 1 %}
-                    <a href="{{ url_for('appointments.confirm_appointment', appointment_id=appointment[0]) }}">Test messaging</a>
+                    <a href="{{ url_for('appointments.confirm_appointment', appointment_id=appointment[0]) }}">Send Reminder</a>
                     {% else %}
                     <span></span>
                     {% endif %}
