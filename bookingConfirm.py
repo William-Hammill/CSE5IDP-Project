@@ -93,7 +93,7 @@ def create_appointment():
         return "This Session is fully booked. Please select another time." + render_template('BookingLayout.html'), 400
     # checks to see if selected time is before current time
     if appt_datetime < current_time:
-        return "This timeslot is unavailable. Please select another time." + render_template('BookingLayout.html'), 400
+        return "This timeslot has already passed. Please select another time." + render_template('BookingLayout.html'), 400
     c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
