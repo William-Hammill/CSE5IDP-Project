@@ -4,6 +4,12 @@
     --link-color: #00796b;
 }
 
+form {
+  margin: 0 auto;
+  width: 50%;  /* 40 em */
+  border: 1px solid red;
+}
+
 body {
   font-family: 'Calibri', sans-serif;
 }
