@@ -35,6 +35,8 @@ def home():
 @app.route('/submit', methods=['POST'])
 def submit_appointment():
     if request.method == 'POST':
+        MAX_PER_SESSION = 8 # Adjust as needed
+
         first_name = request.form['customer_first']
         last_name = request.form['customer_last']
         appt_time = request.form['appt_time']
@@ -42,18 +44,29 @@ def submit_appointment():
         pet_name = request.form['pet_name']
         comments = request.form['comments']
         phone_no = request.form['phone_no']
+
         # Create a datetime object
         appt_datetime = datetime.strptime(f"{appt_date} {appt_time}", "%Y-%m-%d %H:%M")
+
+        current_time = datetime.now()
+        if appt_datetime < current_time:
+            error = 'You cannot book yourself in for a time in the past. Please select another time. '
+            return render_template('appointment_form.html', error=error, form_data=request.form), 400
+
         # Check for existing appointments
         conn = sqlite3.connect('appointments.db')
         c = conn.cursor()
-        # Checks: appt_datetime + appt_status 1 (Scheduled). If these are both taken/true, then deny appointments for this time. 
-        c.execute('SELECT * FROM appointments WHERE appt_datetime = ? AND appt_status = 1', (appt_datetime,))
-        existing_appointments = c.fetchall()
-        conn.close()
-        if existing_appointments:
-            error = "This appointment time is already booked. Please select another time."
+        
+        # Count how many appointments are scheduled for this datetime
+        c.execute('SELECT COUNT(*) FROM appointments WHERE appt_datetime = ? AND appt_status = 1', (appt_datetime,))
+        booked_count = c.fetchone()[0] + 1
+
+        print(f'Booked count is currently {booked_count} out of {MAX_PER_SESSION}')
+        
+        if booked_count > MAX_PER_SESSION:
+            error = "This appointment time is already fully booked. Please select another time."
             return render_template('appointment_form.html', error=error, form_data=request.form), 400
+        
         # Insert data into SQLite
         conn = sqlite3.connect('appointments.db')
         c = conn.cursor()
@@ -75,6 +88,7 @@ def view_appointments_latest():
     c.execute('SELECT customer_first, customer_last, pet_name, appt_datetime, phone_no, comments FROM appointments ORDER BY id DESC LIMIT 1')
     appointments = c.fetchall()
     conn.close()
+
     return render_template('appointment_latest_customer.html', appointments=appointments)
 
 # Route to view appointments

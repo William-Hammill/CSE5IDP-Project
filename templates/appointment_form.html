@@ -24,16 +24,16 @@
       <p style="color: red; font-weight: bold;">{{ error }}</p>
     {% endif %}
     <form action="{{ url_for('submit_appointment') }}" method="POST">
-        <label for="customer_first">First Name:</label>
+        <label for="customer_first">First Name:</label><br>
         <input type="text" id="customer_first" name="customer_first" value="{{ form_data.get('customer_first', '') }}" required><br><br>
 
-        <label for="customer_last">Last Name:</label>
+        <label for="customer_last">Last Name:</label><br>
         <input type="text" id="customer_last" name="customer_last" value="{{ form_data.get('customer_last', '') }}" required><br><br>
 
-        <label for="appt_date">Appointment Date:</label>
+        <label for="appt_date">Appointment Date:</label><br>
         <input type="date" id="appt_date" name="appt_date" value="{{ form_data.get('appt_date', '') }}" required><br><br>
 
-        <label for="appt_time">Appointment Time:</label>
+        <label for="appt_time">Appointment Time:</label><br>
         <select id="appt_time" name="appt_time" value="{{ form_data.get('appt_time', '') }}"  required>
             <!-- Note: Changed value from HH:MM:SS -> HH:MM to 
              avoid submission handling error -->
@@ -43,13 +43,13 @@
                 <option value="12:00">12:00pm</option>
         </select><br><br>
 
-        <label for="pet_name">Pet Name:</label>
+        <label for="pet_name">Pet Name:</label><br>
         <input type="text" id="pet_name" name="pet_name" value="{{ form_data.get('pet_name', '') }}" required><br><br>
 
-        <label for="phone_no">Phone#:</label>
+        <label for="phone_no">Phone#:</label><br>
         <input type="text" id="phone_no" name="phone_no" value="{{ form_data.get('phone_no', '') }}"  required><br><br>
 
-        <label for="comments">Comments (if any):</label>
+        <label for="comments">Comments (if any):</label><br>
         <input type="text" id="comments" name="comments" value="{{ form_data.get('comments', '') }}"><br><br>
 
         <button type="submit">Submit</button>

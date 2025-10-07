@@ -3,6 +3,31 @@ header.main-header {
   /* delete this code block later if it is still not needed */
 }
 
+body {
+  font-family: 'Calibri', sans-serif;
+  text-align: center;
+}
+
+form {
+  margin: 0 auto;
+  width: 50%;  /* 40 em */
+  /* border: 1px solid red; */
+  text-align: center;
+} 
+
+label, input, select {
+  width: 60%;
+}
+
+table, th, td {
+  border: 1px solid;
+  border-collapse: collapse;
+  padding: 10px;
+  margin: 0 auto;
+  /* text-align: center; */
+  /* margin-top: 2rem; */
+}
+
 nav.nav-bar {
   background-color: rgba(9, 204, 135, 0.9);
   display: flex;
