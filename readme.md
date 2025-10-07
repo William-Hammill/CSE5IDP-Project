@@ -14,5 +14,5 @@ python app.py
 
 # Notes:
 
-- [Mostly ~done] Appointment time constraints + selection. Now with a working implementation of appointment time reservation. A customer can book for, say, 12:00PM, then the next customer that attempst to book for this time will be met with an error telling them this timeslot clashes with another customer's appointment. 
-- [To-do] CSS styles
+- Session booking with 8 maximum, done. 
+- If the next group decides to use this as a template for the booking appointment web app, need to implement Twilio or equivalent for SMS message and sending reminders
