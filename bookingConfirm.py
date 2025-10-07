@@ -150,12 +150,14 @@ def confirm_appointment(appointment_id):
         thanks_message = 'Thank you for confirming your appointment with us'
         send_message(thanks_message, messages[1])
         # send_placeholder(thanks_message, messages[1])
-        #return "Please refresh to see appointment changes", 400
-        return redirect(url_for('appointments.view_appointments'))
+        # return "Please refresh to see appointment changes", 400
+        # return redirect(url_for('appointments.view_appointments'))
+        return True
     elif message_response == 'N':
         cancel_appointment(appointment_id)
-        #return "Please refresh to see appointment changes", 400
-        return redirect(url_for('appointments.view_appointments'))
+        # return "Please refresh to see appointment changes", 400
+        # return redirect(url_for('appointments.view_appointments'))
+        return True
 
 
 # placeholder function for allocating employees to appointments
@@ -195,5 +197,6 @@ def cancel_appointment(appointment_id):
         ''', (appointment_id,))
     conn.commit()
     conn.close()
-    #return "Please refresh to see appointment changes"
-    return redirect(url_for('appointments.view_appointments'))
+    # return "Please refresh to see appointment changes"
+    # return redirect(url_for('appointments.view_appointments'))
+    return True

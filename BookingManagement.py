@@ -71,7 +71,7 @@ def start_application():
     current_time = current_datetime.time()
     time = current_time.strftime('%H:%M')
     print(time)
-    if time == '9:00':
+    if time == '14:18':
         send_reminders()
     return booking_application
 
