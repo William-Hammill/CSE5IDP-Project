@@ -1,7 +1,9 @@
 from flask import Flask, render_template
 from datetime import datetime
-from bookingConfirm import appointments, confirm_appointment
+from bookingConfirm import appointments, confirm_auto, confirm_appointment
 import sqlite3
+import schedule
+import time
 
 booking_application = Flask(__name__)
 
@@ -67,38 +69,42 @@ def init_db():
 def start_application():
     booking_application.register_blueprint(appointments)
     init_db()  # initialize sqlite database
-    current_datetime = datetime.now()
-    current_time = current_datetime.time()
-    time = current_time.strftime('%H:%M')
-    print(time)
-    if time == '9:00':
-        send_reminders()
+    #current_datetime = datetime.now()
+    #current_time = current_datetime.time()
+    #time = current_time.strftime('%H:%M')
+    #print(time)
+    #if time == '13:29':
+    #    send_reminders()  # Send appointment reminders automatically
+    schedule.every().day.at('9:00').do(send_reminders)
     return booking_application
 
 
 def send_reminders():
     current_datetime = datetime.now()
     conn = sqlite3.connect('appointments.db')
-    conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
+    conn.row_factory = sqlite3.Row
     c = conn.cursor()
     current_date = current_datetime.date()
-    c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''', (current_date,))
+    c.execute('''SELECT appointment_id FROM reminders WHERE reminder_date = ? ORDER BY appt_time DESC''',
+              (current_date,))
     reminder_messages = c.fetchall()
     if reminder_messages is None:
         print('No appointments available')
-        return True
+        return
     for reminder in reminder_messages:
         appointment_reminder_id = int(reminder[0])
         c.execute('''SELECT appt_status FROM appointments WHERE id = ?''', (appointment_reminder_id,))
         status = c.fetchone()
         appt_status = int(status[0])
         if appt_status == 1:
-            confirm_appointment(appointment_reminder_id)
+            confirm_auto(appointment_reminder_id)
             print('reminders sent')
     conn.close()
-    return True
+    return
 
 
 if __name__ == '__main__':
     application = start_application()
-    application.run(debug=True, host='0.0.0.0', port=5000)
+    while application.run(debug=True, host='0.0.0.0', port=5000):
+        schedule.run_pending()
+        time.sleep(1)

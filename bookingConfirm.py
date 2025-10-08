@@ -89,7 +89,8 @@ def create_appointment():
         return "This Session is fully booked. Please select another time." + render_template('BookingLayout.html'), 400
     # checks to see if selected time is before current time
     if appt_datetime < current_time:
-        return "This timeslot has already passed. Please select another time." + render_template('BookingLayout.html'), 400
+        return "This timeslot has already passed. Please select another time." + render_template(
+            'BookingLayout.html'), 400
     c.execute('''INSERT INTO appointments (customer_first, customer_last, customer_number, appt_datetime, pet_name, 
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
@@ -151,13 +152,13 @@ def confirm_appointment(appointment_id):
         send_message(thanks_message, messages[1])
         # send_placeholder(thanks_message, messages[1])
         # return "Please refresh to see appointment changes", 400
-        # return redirect(url_for('appointments.view_appointments'))
-        return True
+        return redirect(url_for('appointments.view_appointments'))
+        # return True
     elif message_response == 'N':
         cancel_appointment(appointment_id)
         # return "Please refresh to see appointment changes", 400
-        # return redirect(url_for('appointments.view_appointments'))
-        return True
+        return redirect(url_for('appointments.view_appointments'))
+        # return True
 
 
 # placeholder function for allocating employees to appointments
@@ -198,5 +199,72 @@ def cancel_appointment(appointment_id):
     conn.commit()
     conn.close()
     # return "Please refresh to see appointment changes"
-    # return redirect(url_for('appointments.view_appointments'))
+    return redirect(url_for('appointments.view_appointments'))
+
+
+# confirmation funtion for automatically sent reminder messages
+def confirm_auto(appointment_id):
+    conn = sqlite3.connect('appointments.db')
+    conn.row_factory = sqlite3.Row  # Enable dictionary-like row access in appointments_list.html
+    c = conn.cursor()
+    contact_num = '(03) 5442 8880'
+    current_timedate = datetime.now()
+    current_date = current_timedate.date()
+    # retrieve date and time for reminders (48 hours prior to appointment time)
+    c.execute('''SELECT customer_first, customer_number, pet_name, appt_date, 
+                appt_time FROM reminders WHERE reminder_date = ? AND appointment_id = ?''',
+              (current_date, appointment_id))
+    messages = c.fetchone()
+    # print(messages[2])
+    message = f'Hello {messages[0]}, This is a reminder of your appointment at K9-Deli for {messages[2]} scheduled for {messages[3]} at {messages[4]}. Reply with Y to confirm your appointment or N to cancel. if you need to reschedule, please ring {contact_num} '
+    # send above template using twilio client, See messaging.py for more info.
+    send_message(message, messages[1])
+    # wait for text message response
+    sleep(15)
+    # retrieve response via twilio client
+    message_response = receive_message(messages[1])
+    if message_response == 'Y' or message_response is None:
+        c.execute('''
+                    UPDATE appointments 
+                    SET appt_status = 3
+                    WHERE id = ?
+                ''', (appointment_id,))
+        conn.commit()
+        conn.close()
+        thanks_message = 'Thank you for confirming your appointment with us'
+        send_message(thanks_message, messages[1])
+        # return redirect(url_for('appointments.view_appointments'))
+        return True
+    elif message_response == 'N':
+        cancel_auto(appointment_id)
+        # return redirect(url_for('appointments.view_appointments'))
+        return True
+
+
+# cancel funtion for automatically sent reminder messages
+def cancel_auto(appointment_id):
+    conn = sqlite3.connect('appointments.db')
+    c = conn.cursor()
+    c.execute('SELECT appt_datetime FROM appointments WHERE id = ?', (appointment_id,))
+    date = c.fetchone()
+    sessiondate = str(date[0])
+    print(sessiondate)
+    c.execute('SELECT session_limit FROM Sessions WHERE appt_datetime = ?', (sessiondate,))
+    limit = c.fetchone()
+    print(limit)
+    session_number = int(limit[0])
+    new_limit = session_number - 1
+    c.execute('''
+                UPDATE Sessions 
+                SET session_limit = ?
+                WHERE appt_datetime = ?
+            ''', (new_limit, sessiondate,))
+    c.execute('''
+            UPDATE appointments 
+            SET appt_status = 0
+            WHERE id = ?
+        ''', (appointment_id,))
+    conn.commit()
+    conn.close()
     return True
+    # return redirect(url_for('appointments.view_appointments'))

@@ -13,3 +13,4 @@ Flask-WeasyPrint
 fpdf
 twilio
 Flask-Mail
+schedule
