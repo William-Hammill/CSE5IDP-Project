@@ -12,5 +12,6 @@ This system also requires a Twilio account for messaging functions to work, see 
 Running this webapp:
 
 pip install flask
+pip install -r requirements.txt
 
 python app.py
