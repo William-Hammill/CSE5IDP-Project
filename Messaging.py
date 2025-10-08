@@ -14,10 +14,9 @@ def send_message(contents, number):
 
 # create client for receiving messages
 def receive_message(client_num):
-    account_sid = ''  # Must be filled in for code to function
+    account_sid = ''  # Must be filled in for code to function,
     acc_token = ''  # Must be filled in for code to function
     message_client = Client(account_sid, acc_token)
-    received_messages = message_client.messages.list(from_=client_num, to='+12674294612', limit=1)
-
+    received_messages = message_client.messages.list(from_=client_num, to='+12674294612', limit=1) # to number is twilio number
     message = received_messages[0]
     return message.body
