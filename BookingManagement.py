@@ -10,9 +10,6 @@ booking_application = Flask(__name__)
 
 @booking_application.route('/')
 def home():
-    # conn.close()
-
-    # return render_template('AppointmentViewer.html', appointments=booked_appointments)
     return render_template('WelcomePage.html')
 
 
@@ -52,16 +49,6 @@ def init_db():
                         session_limit INTEGER
                     )
                 ''')
-
-    c.execute('''
-                        CREATE TABLE IF NOT EXISTS Questionnaires (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            answer_1 TEXT,
-                            answer_2 TEXT,
-                            answer_3 TEXT,
-                            answer_4 TEXT
-                        )
-                    ''')
     conn.commit()
     conn.close()
 
