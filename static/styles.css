@@ -28,16 +28,22 @@ body {
   align-items:center;
   justify-content:space-evenly;
 }
-
-  .welcome-buttons button {
-    width: 5em;
-    height: 3em;
-  }
-
   .welcome-buttons a {
     text-decoration: none;
     color: black; 
-    cursor: default;
+    /* cursor: default; */
+
+    font-size: 2em;
+    
+    /* width: 15%; */
+    width: 3em;
+
+    padding: 4px;
+    border: 2px solid #76c7c0;
+    background-color: #76c7c0;
+
+    /* rounded corners */
+    border-radius: 12px;
   }
 
 table, th, td {
