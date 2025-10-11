@@ -62,7 +62,7 @@ def start_application():
     # print(time)
     # if time == '13:29':
     #    send_reminders()  # Send appointment reminders automatically
-    schedule.every().day.at('9:00').do(send_reminders)
+    schedule.every().day.at('09:00').do(send_reminders)
     return booking_application
 
 
