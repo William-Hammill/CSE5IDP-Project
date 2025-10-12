@@ -62,7 +62,7 @@ def start_application():
     # print(time)
     # if time == '13:29':
     #    send_reminders()  # Send appointment reminders automatically
-    schedule.every().day.at('09:00').do(send_reminders)
+    #schedule.every().day.at('09:00').do(send_reminders)
     return booking_application
 
 
@@ -92,6 +92,12 @@ def send_reminders():
 
 if __name__ == '__main__':
     application = start_application()
-    while application.run(debug=True, host='0.0.0.0', port=5000):
-        schedule.run_pending()
-        time.sleep(1)
+    started_program = False
+    if application.run(debug=True, host='0.0.0.0', port=5000):
+        started_program = True
+    while started_program:
+        print(time)
+        if time == '09:00':
+            send_reminders()
+    # schedule.run_pending()
+    # time.sleep(1)
