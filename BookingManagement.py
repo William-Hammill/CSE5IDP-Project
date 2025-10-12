@@ -56,13 +56,13 @@ def init_db():
 def start_application():
     booking_application.register_blueprint(appointments)
     init_db()  # initialize sqlite database
-    #current_datetime = datetime.now()
-    #current_time = current_datetime.time()
-    #time = current_time.strftime('%H:%M')
-    #print(time)
-    #if time == '9:00':
+    # current_datetime = datetime.now()
+    # current_time = current_datetime.time()
+    # time = current_time.strftime('%H:%M')
+    # print(time)
+    # if time == '13:29':
     #    send_reminders()  # Send appointment reminders automatically
-    schedule.every().day.at("14:09").do(send_reminders)
+    schedule.every().day.at('09:00').do(send_reminders)
     return booking_application
 
 
@@ -92,16 +92,6 @@ def send_reminders():
 
 if __name__ == '__main__':
     application = start_application()
-
-    current_datetime = datetime.now()
-    current_time = current_datetime.time()
-    time = current_time.strftime('%H:%M')
-    started_program = False
-    if application.run(debug=True, host='0.0.0.0', port=5000):
-        started_program = True
-    while started_program:
-        print(time)
-        if time == '14:17':
-            send_reminders()
-        #schedule.run_pending()
-        #time.sleep(1)
+    while application.run(debug=True, host='0.0.0.0', port=5000):
+        schedule.run_pending()
+        time.sleep(1)

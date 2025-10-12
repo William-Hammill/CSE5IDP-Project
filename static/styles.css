@@ -20,6 +20,32 @@ body {
   text-align: center;
 }
 
+
+.welcome-buttons {
+  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  align-items:center;
+  justify-content:space-evenly;
+}
+  .welcome-buttons a {
+    text-decoration: none;
+    color: black; 
+    /* cursor: default; */
+
+    font-size: 2em;
+    
+    /* width: 15%; */
+    width: 3em;
+
+    padding: 4px;
+    border: 2px solid #76c7c0;
+    background-color: #76c7c0;
+
+    /* rounded corners */
+    border-radius: 12px;
+  }
+
 table, th, td {
   border: 1px solid;
   border-collapse: collapse;
