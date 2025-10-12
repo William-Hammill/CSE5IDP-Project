@@ -95,7 +95,6 @@ def create_appointment():
     comments, appt_status) VALUES (?, ?, ?, ?, ?, ?, ?) ''', (customer_first_name, customer_last_name,
                                                               customer_number, appt_datetime, pets_name, comments,
                                                               appointment_status))
-
     # update session limit
     limit = int(new_limit[0])
     session_number = limit + 1
