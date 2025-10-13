@@ -96,7 +96,7 @@ def message_loop(event):
         current_datetime = datetime.now()
         current_time = current_datetime.time()
         reminder_time = current_time.strftime('%H:%M')
-        if reminder_time == '11:59':
+        if reminder_time == '09:00':
             print('Sending reminders')
             send_reminders()
             time.sleep(60)
