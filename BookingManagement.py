@@ -2,10 +2,11 @@ from flask import Flask, render_template
 from datetime import datetime
 from bookingConfirm import appointments, confirm_auto, confirm_appointment
 import sqlite3
-import schedule
 import time
+import threading
 
 booking_application = Flask(__name__)
+stop_thread = threading.Event()
 
 
 @booking_application.route('/')
@@ -62,7 +63,7 @@ def start_application():
     # print(time)
     # if time == '13:29':
     #    send_reminders()  # Send appointment reminders automatically
-    #schedule.every().day.at('09:00').do(send_reminders)
+    # schedule.every().day.at('09:00').do(send_reminders)
     return booking_application
 
 
@@ -90,14 +91,23 @@ def send_reminders():
     return
 
 
+def message_loop(event):
+    while not event.is_set():
+        current_datetime = datetime.now()
+        current_time = current_datetime.time()
+        reminder_time = current_time.strftime('%H:%M')
+        if reminder_time == '11:59':
+            print('Sending reminders')
+            send_reminders()
+            time.sleep(60)
+
+
 if __name__ == '__main__':
     application = start_application()
-    started_program = False
-    if application.run(debug=True, host='0.0.0.0', port=5000):
-        started_program = True
-    while started_program:
-        print(time)
-        if time == '09:00':
-            send_reminders()
-    # schedule.run_pending()
-    # time.sleep(1)
+    loop_thread = threading.Thread(target=message_loop, args=(stop_thread,))
+    loop_thread.daemon = True
+    print('starting message loop')
+    loop_thread.start()
+    application.run(debug=True, host='0.0.0.0', port=5000)
+    stop_thread.set()
+    print('stopping message loop')
