@@ -14,6 +14,9 @@
         <!-- Flask needs images to be under /static/ by default -->
         <img src="./static/k9_logo.jpg" alt="K9 Logo" style="width:80px; height: auto;">
       <ul class="container">
+        <li><a href="{{ url_for('home') }}">Home Page</a></li>
+      </ul>
+        <ul class="container">
         <li><a href="{{ url_for('appointments.view_appointments') }}">View appointments</a></li>
       </ul>
       <ul class="container">
