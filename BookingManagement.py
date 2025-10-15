@@ -98,9 +98,12 @@ def message_loop(event):
 if __name__ == '__main__':
     application = start_application()
     loop_thread = threading.Thread(target=message_loop, args=(stop_thread,))
+    # starts thread for tracking current time
     loop_thread.daemon = True
     print('starting message loop')
     loop_thread.start()
+    # starts application
     application.run(debug=True, host='0.0.0.0', port=5000)
+    # triggers event to stop message loop thread
     stop_thread.set()
     print('stopping message loop')
