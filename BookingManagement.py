@@ -57,13 +57,6 @@ def init_db():
 def start_application():
     booking_application.register_blueprint(appointments)
     init_db()  # initialize sqlite database
-    # current_datetime = datetime.now()
-    # current_time = current_datetime.time()
-    # time = current_time.strftime('%H:%M')
-    # print(time)
-    # if time == '13:29':
-    #    send_reminders()  # Send appointment reminders automatically
-    # schedule.every().day.at('09:00').do(send_reminders)
     return booking_application
 
 
