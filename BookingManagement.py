@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from datetime import datetime
-from bookingConfirm import appointments, confirm_auto, confirm_appointment
+from bookingConfirm import appointments, confirm_auto
 import sqlite3
 import time
 import threading
